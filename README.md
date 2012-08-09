@@ -106,7 +106,7 @@ Available exceptions for calling request
 	* Mork_ConnectionException
 	* When client cannot connect to server
 * JSON_PARSE_ERROR
-	* Mork_JSON_ParseException
+	* Mork_JSONParseException
 	* When server has received invalid JSON
 * INVALID_REQUEST_ERROR
 	* Mork_InvalidRequestException
@@ -114,8 +114,8 @@ Available exceptions for calling request
 * METHOD_NOT_FOUND_ERROR
 	* Mork_MethodNotFoundException
 	* When unknown method was called
-* INTERNAL_ERROR
-	* Mork_InternalException
+* INTERNAL_SERVER_ERROR
+	* Mork_InternalServerException
 	* When server failed to process the request
 * AUTHENTICATION_ERROR
 	* Mork_AuthenticationException
