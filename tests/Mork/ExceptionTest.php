@@ -8,13 +8,13 @@ class Mork_ExceptionTest extends PHPUnit_Framework_TestCase
 	
 	public function setUp()
 	{
-		$response = new Mork_Response();
-		$this->exception = new Mork_Exception($response);
+		$request = new Mork_Request('actionName');
+		$this->exception = new Mork_Exception($request);
 	}
 	
-	public function testExceptionHasResponse()
+	public function testExceptionHasRequest()
 	{
-		$response = $this->exception->getResponse();
-		$this->assertInstanceOf('Mork_Response', $response);
+		$request = $this->exception->getRequest();
+		$this->assertInstanceOf('Mork_Request', $request);
 	}
 }

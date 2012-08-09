@@ -2,21 +2,21 @@
 class Mork_Exception extends Exception
 {
 	/**
-	 * @var Mork_Response
+	 * @var Mork_Request
 	 */
-	private $response = null;
+	private $request = null;
 	
-	public function __construct(Mork_Response $response, $message = null)
+	public function __construct(Mork_Request $request, $message = null)
 	{
 		parent::__construct($message);
-		$this->response = $response;
+		$this->request = $request;
 	}
 	
 	/**
-	 * @return Mork_Response
+	 * @return Mork_Request
 	 */
-	public function getResponse()
+	public function getRequest()
 	{
-		return $this->response;
+		return $this->request;
 	}
 }

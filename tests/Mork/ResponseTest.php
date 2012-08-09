@@ -9,12 +9,11 @@ class Mork_ResponseTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->response = new Mork_Response();
-		$this->response->setRequest( new Mork_Request('someName' ));
 	}
 	
-	public function testResponseHasRequest()
+	public function testNotFinished()
 	{
-		$request = $this->response->getRequest();
-		$this->assertInstanceOf('Mork_Request', $request);
+		$this->markTestIncomplete(); // FIXME
 	}
+	
 }

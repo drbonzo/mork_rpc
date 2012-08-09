@@ -42,6 +42,17 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($this->request->getParam('aaaaaa'));
 	}
 	
+	public function testByDefaultRequestHasNotResponse()
+	{
+		$this->assertNull($this->request->getResponse());
+	}
+	
+	public function testRequestHasResponseWhenResponseHasBeenSet()
+	{
+		$this->request->setResponse( new Mork_Response());
+		$this->assertInstanceOf('Mork_Response', $this->request->getResponse());
+	}
+	
 	public function testRequestCanFormatItselfAsJSON()
 	{
 		/*
