@@ -5,11 +5,17 @@ class Mork_Request
 	
 	private $params = array();
 	
+	private $version;
+	
 	public function __construct($methodName)
 	{
 		$this->methodName = $methodName;
+		$this->version = Mork_Commons::VERSION_1_0;
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function getMethodName()
 	{
 		return $this->methodName;
@@ -48,5 +54,18 @@ class Mork_Request
 	public function getParams()
 	{
 		return $this->params;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getAsJSON()
+	{
+		$requestAsArray = array( 'mork' => array() );
+		$requestAsArray['mork']['version'] = $this->version;
+		$requestAsArray['mork']['method'] = $this->methodName;
+		$requestAsArray['mork']['params'] = $this->params;
+		
+		return json_encode($requestAsArray);
 	}
 }

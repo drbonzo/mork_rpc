@@ -11,6 +11,7 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 		$this->request = new Mork_Request('actionName');
 		$this->request->setParam('foo', 'bar');
 		$this->request->setParam('lorem', 'ipsum');
+		$this->request->setParam('names', array( 'Bob', 'John', 'Steve'));
 	}
 	
 	public function testRequestCanGiveItsMethodName()
@@ -21,7 +22,7 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 	public function testRequestCanReturnItsParams()
 	{
 		$params = $this->request->getParams();
-		$this->assertCount(2, $params);
+		$this->assertCount(3, $params);
 	}
 	
 	public function testRequestCanReturnParamByName()
@@ -39,6 +40,39 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 	public function testRequestingNonexistingParamReturnsNull()
 	{
 		$this->assertNull($this->request->getParam('aaaaaa'));
+	}
+	
+	public function testRequestCanFormatItselfAsJSON()
+	{
+		/*
+		{
+			mork :
+			{
+				version : 1.0,
+				method : addPost,
+				params :
+				{
+					foo : 'bar',
+					lorem : 'ipsum',
+					'names' : [ 'Bob', 'John', 'Steve' ]
+				}
+			}
+		}
+		*/
+		$requestAsArray = array(
+			'mork' => array(
+				'version' => Mork_Commons::VERSION_1_0,
+				'method' => 'actionName',
+				'params' => array(
+					'foo' => 'bar',
+					'lorem' => 'ipsum',
+					'names' => array( 'Bob', 'John', 'Steve')
+				)
+			)
+		);
+		
+		$requestAsJSON = json_encode($requestAsArray);
+		$this->assertEquals($requestAsJSON, $this->request->getAsJSON());
 	}
 	
 }

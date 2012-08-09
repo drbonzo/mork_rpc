@@ -9,5 +9,6 @@ require_once( dirname(__FILE__) . '/Mork/JSONParseException.php');
 require_once( dirname(__FILE__) . '/Mork/MethodNotFoundException.php');
 require_once( dirname(__FILE__) . '/Mork/Request.php');
 require_once( dirname(__FILE__) . '/Mork/Response.php');
+require_once( dirname(__FILE__) . '/Mork/Commons.php');
 
 require_once( dirname(__FILE__) . '/Mork/Client.php');
