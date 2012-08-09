@@ -1,5 +1,5 @@
 <?php 
-class ExceptionTest extends PHPUnit_Framework_TestCase
+class Mork_ExceptionTest extends PHPUnit_Framework_TestCase
 {
 	/**
 	 * @var Mork_Exception
