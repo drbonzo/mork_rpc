@@ -5,5 +5,4 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 	{
 		$this->markTestIncomplete();
 	}
-	
 }

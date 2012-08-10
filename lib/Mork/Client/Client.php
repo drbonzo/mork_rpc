@@ -30,7 +30,6 @@ class Mork_Client_Client
 	 * 
 	 * @param Mork_Client_Request $request
 	 * 
-	 * TODO more
 	 * @throws Mork_Client_ConnectionException
 	 */
 	public function sendRequest(Mork_Client_Request $request)
@@ -41,7 +40,7 @@ class Mork_Client_Client
 		{
 			throw new Mork_Client_ConnectionException($request);
 		}
-// 		var_dump($rawResponse);
+		var_dump($rawResponse);
 // 		print_r( $rawResponse );
 	}
 	
