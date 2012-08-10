@@ -1,5 +1,5 @@
 <?php 
-class Mork_Request
+class Mork_Client_Request
 {
 	private $methodName = null;
 	
@@ -8,14 +8,14 @@ class Mork_Request
 	private $version;
 	
 	/**
-	 * @var Mork_Response
+	 * @var Mork_Client_Response
 	 */
 	private $response;
 	
 	public function __construct($methodName)
 	{
 		$this->methodName = $methodName;
-		$this->version = Mork_Commons::VERSION_1_0;
+		$this->version = Mork_Common_Commons::VERSION_1_0;
 	}
 	
 	// METHOD 
@@ -83,15 +83,15 @@ class Mork_Request
 	// RESPONSE
 	
 	/**
-	 * @param Mork_Response $response
+	 * @param Mork_Client_Response $response
 	 */
-	public function setResponse(Mork_Response $response)
+	public function setResponse(Mork_Client_Response $response)
 	{
 		$this->response = $response;
 	}
 	
 	/**
-	 * @return Mork_Response
+	 * @return Mork_Client_Response
 	 */
 	public function getResponse()
 	{

@@ -1,14 +1,14 @@
 <?php
-class Mork_RequestTest extends PHPUnit_Framework_TestCase
+class Mork_Client_RequestTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var Mork_Request
+	 * @var Mork_Client_Request
 	 */
 	private $request;
 
 	public function setUp()
 	{
-		$this->request = new Mork_Request('actionName');
+		$this->request = new Mork_Client_Request('actionName');
 		$this->request->setParam('foo', 'bar');
 		$this->request->setParam('lorem', 'ipsum');
 		$this->request->setParam('names', array( 'Bob', 'John', 'Steve'));
@@ -49,8 +49,8 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 	
 	public function testRequestHasResponseWhenResponseHasBeenSet()
 	{
-		$this->request->setResponse( new Mork_Response());
-		$this->assertInstanceOf('Mork_Response', $this->request->getResponse());
+		$this->request->setResponse( new Mork_Client_Response());
+		$this->assertInstanceOf('Mork_Client_Response', $this->request->getResponse());
 	}
 	
 	public function testRequestCanFormatItselfAsJSON()
@@ -72,7 +72,7 @@ class Mork_RequestTest extends PHPUnit_Framework_TestCase
 		*/
 		$requestAsArray = array(
 			'mork' => array(
-				'version' => Mork_Commons::VERSION_1_0,
+				'version' => Mork_Common_Commons::VERSION_1_0,
 				'method' => 'actionName',
 				'params' => array(
 					'foo' => 'bar',

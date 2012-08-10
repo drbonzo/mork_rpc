@@ -1,14 +1,17 @@
 <?php
-require_once( dirname(__FILE__) . '/Mork/Exception.php');
-require_once( dirname(__FILE__) . '/Mork/ApplicationException.php');
-require_once( dirname(__FILE__) . '/Mork/AuthenticationException.php');
-require_once( dirname(__FILE__) . '/Mork/ConnectionException.php');
-require_once( dirname(__FILE__) . '/Mork/InternalServerException.php');
-require_once( dirname(__FILE__) . '/Mork/InvalidRequestException.php');
-require_once( dirname(__FILE__) . '/Mork/JSONParseException.php');
-require_once( dirname(__FILE__) . '/Mork/MethodNotFoundException.php');
+$_files = array(
+	'Mork/Common/Commons.php',
+	'Mork/Common/Exception.php',
 
-require_once( dirname(__FILE__) . '/Mork/Response.php');
-require_once( dirname(__FILE__) . '/Mork/Request.php');
-require_once( dirname(__FILE__) . '/Mork/Commons.php');
-require_once( dirname(__FILE__) . '/Mork/Server.php');
+	'Mork/Server/ServerException.php',
+	'Mork/Server/RequestParser.php',
+	'Mork/Server/Response.php',
+	'Mork/Server/Server.php',
+);
+
+foreach ( $_files as $_file )
+{
+	require_once( dirname(__FILE__) . '/' . $_file );
+}
+unset($_files);
+unset($_file);

@@ -1,5 +1,5 @@
 <?php 
-class Mork_Server
+class Mork_Server_Server
 {
 	/**
 	 * @var Object
@@ -14,7 +14,7 @@ class Mork_Server
 	/**
 	 * @param string $input
 	 * 
-	 * @return Mork_Response
+	 * @return Mork_Server_Response
 	 */
 	public function handle($input)
 	{
@@ -23,33 +23,33 @@ class Mork_Server
 		if ( is_null($requestArray ))
 		{
 			// renderError
-			throw new Mork_JSONParseException(null);
+			throw new Mork_Server_JSONParseException(null);
 		}
 		
 		if ( ! isset( $requestArray['mork']))
 		{
-			throw new Mork_JSONParseException(null);
+			throw new Mork_Server_JSONParseException(null);
 		}
 		
 		$morkData = $requestArray['mork'];
-		if ( ! isset($morkData['version']) || $morkData['version'] != Mork_Commons::VERSION_1_0 )
+		if ( ! isset($morkData['version']) || $morkData['version'] != Mork_Common_Commons::VERSION_1_0 )
 		{
-			throw new Mork_InvalidRequestException(null, 'Missing or invalid version number.');
+			throw new Mork_Server_InvalidRequestException(null, 'Missing or invalid version number.');
 		}
 		
 		if ( ! isset( $morkData['method']))
 		{
-			throw new Mork_InvalidRequestException(null, 'Missing method name.');
+			throw new Mork_Server_InvalidRequestException(null, 'Missing method name.');
 		}
 		
 		if ( ! is_callable(array( $this->actionHandler, $morkData['method'])))
 		{
-			throw new Mork_MethodNotFoundException(null, "Method not found");
+			throw new Mork_Server_MethodNotFoundException(null, "Method not found");
 		}
 		
 		if ( ! isset($morkData['params']))
 		{
-			throw new Mork_InvalidRequestException(null, 'Missing params section.');
+			throw new Mork_Server_InvalidRequestException(null, 'Missing params section.');
 		}
 		
 		$params = $morkData['params'];
