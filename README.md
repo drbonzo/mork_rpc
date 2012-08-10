@@ -136,3 +136,9 @@ Available exceptions for calling request
 
 * What is **mörk**
 	* *mörk* means *dark* in Swedish. It looked cool for a library name
+	
+# System requirements
+
+* PHP 5.3
+* JSON module
+* TODO
