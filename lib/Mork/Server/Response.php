@@ -11,7 +11,7 @@ class Mork_Server_Response
 	
 	private $errorData;
 	
-	private $errorType = null;
+	private $errorCode = null;
 	
 	private $errorMessage = null;
 	
@@ -20,7 +20,7 @@ class Mork_Server_Response
 		$this->status = Mork_Server_Response::OK;
 		$this->successData = array();
 		$this->errorData = null;
-		$this->errorType = null;
+		$this->errorCode = null;
 		$this->errorMessage = null;
 	}
 	
@@ -33,19 +33,19 @@ class Mork_Server_Response
 		$this->successData = $data;
 		
 		$this->errorData = null;
-		$this->errorType = null;
+		$this->errorCode = null;
 		$this->errorMessage = null;
 	}
 	
 	/**
-	 * @param string $errorType - see constants in Mork_Common_Commons
+	 * @param string $errorCode - see constants in Mork_Common_Commons
 	 * @param string $errorMessage
 	 * @param mixed $data
 	 */
-	private function setErrorData($errorType, $errorMessage, $data)
+	private function setErrorData($errorCode, $errorMessage, $data)
 	{
 		$this->status = Mork_Server_Response::ERROR;
-		$this->errorType = $errorType;
+		$this->errorCode = $errorCode;
 		$this->errorMessage = $errorMessage;
 		$this->errorData = $data;
 		
@@ -66,16 +66,16 @@ class Mork_Server_Response
 	
 	/**
 	 * 
-	 * @param string $errorType
+	 * @param string $errorCode
 	 * @param string $errorMessage
 	 * @param mixed $errorData
 	 * 
 	 * @return Mork_Server_Response
 	 */
-	static public function newErrorResponse($errorType, $errorMessage, $errorData)
+	static public function newErrorResponse($errorCode, $errorMessage, $errorData)
 	{
 		$response = new Mork_Server_Response();
-		$response->setErrorData($errorType, $errorMessage, $errorData);
+		$response->setErrorData($errorCode, $errorMessage, $errorData);
 		return $response;
 	}
 	
@@ -92,9 +92,9 @@ class Mork_Server_Response
 	/**
 	 * @return string|null
 	 */
-	public function getErrorType()
+	public function getErrorCode()
 	{
-		return $this->errorType;
+		return $this->errorCode;
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class Mork_Server_Response
 		else 
 		{
 			$responseArray['mork']['error'] = array(
-				'code' => $this->errorType,
+				'code' => $this->errorCode,
 				'message' => $this->errorMessage,
 				'data' => $this->errorData
 			);

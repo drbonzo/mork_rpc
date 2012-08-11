@@ -53,13 +53,13 @@ class Mork_Server_Request
 	}
 
 	/**
-	 * @param string $errorType
+	 * @param string $errorCode
 	 * @param string $errorMessage
 	 * @param mixed $errorData
 	 */
-	public function returnErrorResponse($errorType, $errorMessage, $errorData)
+	public function returnErrorResponse($errorCode, $errorMessage, $errorData)
 	{
-		$this->response = Mork_Server_Response::newErrorResponse($errorType, $errorMessage, $errorData);
+		$this->response = Mork_Server_Response::newErrorResponse($errorCode, $errorMessage, $errorData);
 	}
 	
 	/**

@@ -42,7 +42,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::JSON_PARSE_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::JSON_PARSE_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithMethodNotFoundErrorWhenUnknownMethodGetsCalled()
@@ -55,7 +55,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithInvalidRequestErrorWhenRequestWasInvalid()
@@ -69,7 +69,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorCode());
 	}
 
 	public function testServerRespondsWithAuthenticationErrorWhenAuthFailed()
@@ -81,7 +81,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::AUTHENTICATION_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::AUTHENTICATION_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithApplicationErrorWhenApplicationExceptionIsThrown()
@@ -93,7 +93,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::APPLICATION_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::APPLICATION_ERROR, $response->getErrorCode());
 		$this->assertEquals('Service is disabled', $response->getErrorMessage());
 		$this->assertEquals(array('lol' => 'rotfl'), $response->getErrorData() );
 	}
@@ -107,7 +107,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithInternalServerErrorWhenAnyOtherExceptionIsThrown()
@@ -119,7 +119,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorCode());
 	}
 }
 

@@ -32,9 +32,9 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($this->successResponse->isError());
 	}
 	
-	public function testNewSuccessResponseHasNoErrorType()
+	public function testNewSuccessResponseHasNoErrorCode()
 	{
-		$this->assertNull($this->successResponse->getErrorType());
+		$this->assertNull($this->successResponse->getErrorCode());
 	}
 	
 	public function testNewSuccessResponseHasErrorData()
@@ -55,9 +55,9 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->errorResponse->isError());
 	}
 	
-	public function testNewErrorResponseHasErrorType()
+	public function testNewErrorResponseHasErrorCode()
 	{
-		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $this->errorResponse->getErrorType());
+		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $this->errorResponse->getErrorCode());
 	}
 	
 	public function testNewErrorResponseHasErrorMessage()
