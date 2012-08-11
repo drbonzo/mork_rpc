@@ -15,48 +15,38 @@ class Mork_Server_Server
 	 * @param string $input
 	 * 
 	 * @return Mork_Server_Response
+	 * 
+	 * @throws Mork_Server_ServerException
 	 */
 	public function handle($input)
 	{
-		$requestArray = json_decode($input, true);
-		
-		if ( is_null($requestArray ))
+		try
 		{
-			// renderError
-			throw new Mork_Server_JSONParseException(null);
+			$requestParser = new Mork_Server_RequestParser();
+			$request = $requestParser->parseRequest($input);
+			$methodName = $request->getMethodName();
+			
+			if ( ! is_callable(array($this->actionHandler, $methodName)))
+			{
+				throw new Mork_Server_MethodNotFoundException($methodName);
+			}
+			else
+			{
+				// TODO co ma dostac taki handler? moze inject request?
+				// TODO co ma zwracac?
+				$result = call_user_func_array(array($this->actionHandler, $methodName), $request );
+				$response = $request->getResponse();
+				print($response->getJSON());
+			}
 		}
-		
-		if ( ! isset( $requestArray['mork']))
+		catch ( Mork_Server_MethodNotFoundException $e )
 		{
-			throw new Mork_Server_JSONParseException(null);
+			// TODO return error response
 		}
-		
-		$morkData = $requestArray['mork'];
-		if ( ! isset($morkData['version']) || $morkData['version'] != Mork_Common_Commons::VERSION_1_0 )
+		catch ( Mork_Server_ServerException $e )
 		{
-			throw new Mork_Server_InvalidRequestException(null, 'Missing or invalid version number.');
+			// TODO lapac wyjatki i zwracac errory
+			throw $e;
 		}
-		
-		if ( ! isset( $morkData['method']))
-		{
-			throw new Mork_Server_InvalidRequestException(null, 'Missing method name.');
-		}
-		
-		if ( ! is_callable(array( $this->actionHandler, $morkData['method'])))
-		{
-			throw new Mork_Server_MethodNotFoundException(null, "Method not found");
-		}
-		
-		if ( ! isset($morkData['params']))
-		{
-			throw new Mork_Server_InvalidRequestException(null, 'Missing params section.');
-		}
-		
-		$params = $morkData['params'];
-		print_r( $morkData);
-		
-		return call_user_func(array($this->actionHandler, $morkData['method']), $params); // FIXME do sth with response
-// 		[version] => 1.0 [method] => addPost [params
-// 		print_r( $morkData );
 	}
 }

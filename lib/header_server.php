@@ -4,8 +4,12 @@ $_files = array(
 	'Mork/Common/Exception.php',
 
 	'Mork/Server/ServerException.php',
+	'Mork/Server/InvalidRequestException.php',
+	'Mork/Server/MethodNotFoundException.php',
+	'Mork/Server/InvalidJSONInRequestException.php',
 	'Mork/Server/RequestParser.php',
 	'Mork/Server/Response.php',
+	'Mork/Server/Request.php',
 	'Mork/Server/Server.php',
 );
 
