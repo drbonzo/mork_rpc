@@ -6,6 +6,16 @@ class Mork_Server_Server
 	 */
 	private $actionHandler = null;
 	
+	/**
+	 * @var Mork_Server_RequestParser
+	 */
+	private $requestParser = null;
+	
+	public function __construct(Mork_Server_RequestParser $requestParser)
+	{
+		$this->requestParser = $requestParser;
+	}
+	
 	public function setHandler($actionHandler)
 	{
 		$this->actionHandler = $actionHandler;
@@ -22,8 +32,7 @@ class Mork_Server_Server
 	{
 		try
 		{
-			$requestParser = new Mork_Server_RequestParser();
-			$request = $requestParser->parseRequest($input);
+			$request = $this->requestParser->parseRequest($input);
 			$methodName = $request->getMethodName();
 			
 			if ( ! is_callable(array($this->actionHandler, $methodName)))
@@ -34,29 +43,36 @@ class Mork_Server_Server
 			{
 				$result = call_user_func_array(array($this->actionHandler, $methodName), array($request) );
 				$response = $request->getResponse();
-				print($response->getAsJSON());
+				return $response;
 			}
 		}
 		catch ( Mork_Server_InvalidJSONInRequestException $e )
 		{
-			//TODO return error response
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::JSON_PARSE_ERROR, 'JSON was invalid', null );
 		}
 		catch ( Mork_Server_InvalidRequestException $e )
 		{
-			// TODO return error response
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INVALID_REQUEST_ERROR, $e->getMessage(), null );
 		}
 		catch ( Mork_Server_MethodNotFoundException $e )
 		{
-			// TODO return error response
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, sprintf('Method "%s" was not found', $e->getMethodName() ), null );
+		}
+		catch ( Mork_Server_AuthenticationException $e )
+		{
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::AUTHENTICATION_ERROR, $e->getMessage(), null );
+		}
+		catch ( Mork_Server_ApplicationException $e )
+		{
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::APPLICATION_ERROR, $e->getMessage(), $e->getErrorData() );
 		}
 		catch ( Mork_Server_ServerException $e )
 		{
-			// TODO lapac wyjatki i zwracac errory
-			throw $e;
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_ERROR, '', null );
 		}
 		catch ( Exception $e )
 		{
-			// TODO internal server error
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_ERROR, '', null );
 		}
 	}
 }

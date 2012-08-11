@@ -105,6 +105,22 @@ class Mork_Server_Response
 		return $this->errorMessage;
 	}
 	
+	/**
+	 * @return mixed
+	 */
+	public function getErrorData()
+	{
+		return $this->errorData;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getSuccessData()
+	{
+		return $this->successData;
+	}
+	
 	public function getAsJSON()
 	{
 		$responseArray = array('mork' => array());

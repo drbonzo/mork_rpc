@@ -40,8 +40,8 @@ class Mork_Client_Client
 		{
 			throw new Mork_Client_ConnectionException($request);
 		}
-		var_dump($rawResponse);
-// 		print_r( $rawResponse );
+		
+		return $rawResponse; // FIXME
 	}
 	
 	/**

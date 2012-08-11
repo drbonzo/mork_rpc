@@ -17,8 +17,11 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->errorResponse = Mork_Server_Response::newErrorResponse(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, 'Method "fooBar" not found', array( 'method' => 'fooBar') );
 	}
 	
+	//
 	// TYPES
+	//
 	
+	// OK
 	public function testNewSuccessResponseIsOK()
 	{
 		$this->assertTrue($this->successResponse->isOK());
@@ -29,10 +32,18 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($this->successResponse->isError());
 	}
 	
-	public function testNewErrorResponseHasNoErrorType()
+	public function testNewSuccessResponseHasNoErrorType()
 	{
 		$this->assertNull($this->successResponse->getErrorType());
 	}
+	
+	public function testNewSuccessResponseHasErrorData()
+	{
+		$this->assertEquals(array( 'foo' => 'bar', 'id' => 4 ), $this->successResponse->getSuccessData() );
+	}
+	
+	
+	// ERROR
 	
 	public function testNewErrorResponseIsNotOK()
 	{
@@ -54,8 +65,14 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Method "fooBar" not found', $this->errorResponse->getErrorMessage());
 	}
 	
-	// JSON
+	public function testNewErrorResponseHasErrorData()
+	{
+		$this->assertEquals(array( 'method' => 'fooBar'), $this->errorResponse->getErrorData() );
+	}
 	
+	//
+	// JSON
+	//
 	public function testSuccessResponseReturnsJSON()
 	{
 		$expectedJSON = json_encode(
