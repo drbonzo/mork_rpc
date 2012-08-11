@@ -182,4 +182,12 @@ class Mork_Server_Response
 	{
 		return $this->headers;
 	}
+	
+	public function sendHeaders()
+	{
+		foreach ( $this->getHeaders() as $headerName => $code )
+		{
+			header($headerName, null, $code );
+		}
+	}
 }
