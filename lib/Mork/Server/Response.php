@@ -15,6 +15,8 @@ class Mork_Server_Response
 	
 	private $errorMessage = null;
 	
+	private $headers = array();
+	
 	private function __construct()
 	{
 		$this->status = Mork_Server_Response::OK;
@@ -22,6 +24,7 @@ class Mork_Server_Response
 		$this->errorData = null;
 		$this->errorCode = null;
 		$this->errorMessage = null;
+		$this->headers = array();
 	}
 	
 	/**
@@ -35,6 +38,10 @@ class Mork_Server_Response
 		$this->errorData = null;
 		$this->errorCode = null;
 		$this->errorMessage = null;
+		
+		$this->headers = array(
+			'HTTP/1.0 200 OK' => 200	
+		);
 	}
 	
 	/**
@@ -50,6 +57,33 @@ class Mork_Server_Response
 		$this->errorData = $data;
 		
 		$this->successData = null;
+		
+		
+		if ( $errorCode == Mork_Common_Commons::INTERNAL_SERVER_ERROR )
+		{
+			$this->headers = array(
+				'HTTP/1.0 500 Internal Server Error' => 500
+			);
+		}
+		else if ( in_array( $errorCode, array( 
+			Mork_Common_Commons::INVALID_JSON_ERROR,
+			Mork_Common_Commons::INVALID_REQUEST_ERROR,
+			Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_Commons::AUTHENTICATION_ERROR,
+			Mork_Common_Commons::APPLICATION_ERROR,
+		) ) )
+		{
+			$this->headers = array(
+				'HTTP/1.0 400 Bad Request' => 400
+			);
+		}
+		else 
+		{
+			$this->headers = array(
+				'HTTP/1.0 500 Internal Server Error' => 500
+			);
+		}
+				
 	}
 	
 	/**
@@ -72,7 +106,7 @@ class Mork_Server_Response
 	 * 
 	 * @return Mork_Server_Response
 	 */
-	static public function newErrorResponse($errorCode, $errorMessage, $errorData)
+	static public function newErrorResponse($errorCode, $errorMessage, $errorData = null)
 	{
 		$response = new Mork_Server_Response();
 		$response->setErrorData($errorCode, $errorMessage, $errorData);
@@ -142,5 +176,10 @@ class Mork_Server_Response
 		}
 		
 		return json_encode($responseArray);
+	}
+	
+	public function getHeaders()
+	{
+		return $this->headers;
 	}
 }

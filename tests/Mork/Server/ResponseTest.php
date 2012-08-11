@@ -113,4 +113,37 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedJSON, $this->errorResponse->getAsJSON());
 	}
 	
+	// HEADERS
+	
+	public function testSuccessResponseHasHTTPStatus200Header()
+	{
+		$headers = $this->successResponse->getHeaders();
+		$this->assertTrue(array_key_exists('HTTP/1.0 200 OK', $headers));
+	}
+	
+	public function testErrorResponseWithInternalServerErrorHasHTTPStatus500Header()
+	{
+		$response = Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, 'fail' );
+		$headers = $response->getHeaders();
+		$this->assertTrue(array_key_exists('HTTP/1.0 500 Internal Server Error', $headers));
+	}
+	
+	public function testErrorResponseWithoutInternalServerErrorHasHTTPStatus400Header()
+	{
+		$otherErrorCodes = array(
+			Mork_Common_Commons::INVALID_JSON_ERROR,
+			Mork_Common_Commons::INVALID_REQUEST_ERROR,
+			Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_Commons::AUTHENTICATION_ERROR,
+			Mork_Common_Commons::APPLICATION_ERROR,
+		);
+		
+		foreach ( $otherErrorCodes as $errorCode )
+		{
+			$response = Mork_Server_Response::newErrorResponse($errorCode, 'fail' );
+			$headers = $response->getHeaders();
+			$this->assertTrue(array_key_exists('HTTP/1.0 400 Bad Request', $headers));
+		}
+	}
+	
 }
