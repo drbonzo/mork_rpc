@@ -10,7 +10,7 @@ $_files = array(
 	'Mork/Client/ConnectionException.php',
 	'Mork/Client/InternalServerException.php',
 	'Mork/Client/InvalidRequestException.php',
-	'Mork/Client/JSONParseException.php',
+	'Mork/Client/InvalidJSONException.php',
 	'Mork/Client/MethodNotFoundException.php',
 	'Mork/Client/Request.php',
 	'Mork/Client/Response.php',
