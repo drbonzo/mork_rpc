@@ -32,12 +32,18 @@ class Mork_Server_Server
 			}
 			else
 			{
-				// TODO co ma dostac taki handler? moze inject request?
-				// TODO co ma zwracac?
-				$result = call_user_func_array(array($this->actionHandler, $methodName), $request );
+				$result = call_user_func_array(array($this->actionHandler, $methodName), array($request) );
 				$response = $request->getResponse();
-				print($response->getJSON());
+				print($response->getAsJSON());
 			}
+		}
+		catch ( Mork_Server_InvalidJSONInRequestException $e )
+		{
+			//TODO return error response
+		}
+		catch ( Mork_Server_InvalidRequestException $e )
+		{
+			// TODO return error response
 		}
 		catch ( Mork_Server_MethodNotFoundException $e )
 		{
@@ -47,6 +53,10 @@ class Mork_Server_Server
 		{
 			// TODO lapac wyjatki i zwracac errory
 			throw $e;
+		}
+		catch ( Exception $e )
+		{
+			// TODO internal server error
 		}
 	}
 }

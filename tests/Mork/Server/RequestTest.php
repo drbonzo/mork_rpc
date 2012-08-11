@@ -21,6 +21,38 @@ class Mork_Server_RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array('title' => 'foobar'), $this->request->getParams());
 	}
 	
-	// TODO returning results
-	// TODO returning errors
+	public function testRequestCanReturnParamsByName()
+	{
+		$this->assertEquals('foobar', $this->request->getParam('title'));
+	}
+	
+	public function testRequestReturnsNullForUnknownParams()
+	{
+		$this->assertNull($this->request->getParam('unknown'));
+	}
+	
+	public function testNewRequestHasNoResponseYet()
+	{
+		$this->assertNull($this->request->getResponse());
+	}
+	
+	public function testRequestWithSuccessResponseSetHasResponse()
+	{
+		$this->request->returnResponse(array('foo' => 'bar'));
+		
+		$response = $this->request->getResponse();
+		$this->assertInstanceOf('Mork_Server_Response', $response );
+		$this->assertTrue($response->isOK() );
+		$this->assertFalse($response->isError() );
+	}
+	
+	public function testRequestWithErrorResponseSetHasResponse()
+	{
+		$this->request->returnErrorResponse(Mork_Common_Commons::JSON_PARSE_ERROR, 'JSON is invalid', array('foo' => 'bar'));
+		
+		$response = $this->request->getResponse();
+		$this->assertInstanceOf('Mork_Server_Response', $response );
+		$this->assertFalse($response->isOK() );
+		$this->assertTrue($response->isError() );
+	}
 }
