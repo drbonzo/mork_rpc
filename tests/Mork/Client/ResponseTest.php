@@ -8,7 +8,7 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 	
 	public function setUp()
 	{
-		$this->response = new Mork_Client_Response(array('foo' => 'bar', 'lotr' => 'epic'));
+		$this->response = Mork_Client_Response::newSuccessResponse(array('foo' => 'bar', 'lotr' => 'epic'));
 	}
 	
 	public function testResponseCanReturnItsData()

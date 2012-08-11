@@ -49,7 +49,7 @@ class Mork_Client_RequestTest extends PHPUnit_Framework_TestCase
 	
 	public function testRequestHasResponseWhenResponseHasBeenSet()
 	{
-		$this->request->setResponse( new Mork_Client_Response('foo'));
+		$this->request->setResponse( Mork_Client_Response::newSuccessResponse('foo'));
 		$this->assertInstanceOf('Mork_Client_Response', $this->request->getResponse());
 	}
 	
