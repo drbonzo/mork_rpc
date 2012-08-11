@@ -162,17 +162,17 @@ class Mork_Server_Response
 		$responseArray['mork']['status'] = $this->status;
 		if ( $this->isOK() )
 		{
+			$responseArray['mork']['data'] = $this->successData;
 			$responseArray['mork']['error'] = null;
-			$responseArray['mork']['result'] = $this->successData;
 		}
 		else 
 		{
+			$responseArray['mork']['data'] = null;
 			$responseArray['mork']['error'] = array(
 				'code' => $this->errorCode,
 				'message' => $this->errorMessage,
 				'data' => $this->errorData
 			);
-			$responseArray['mork']['result'] = null;
 		}
 		
 		return json_encode($responseArray);

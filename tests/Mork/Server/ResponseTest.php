@@ -80,11 +80,11 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 				'mork' => array(
 					'version' => Mork_Common_Commons::VERSION_1_0,
 					'status' => Mork_Server_Response::OK,
-					'error' => null,
-					'result' => array(
+					'data' => array(
 						'foo' => 'bar',
 						'id' => 4
-					)
+					),
+					'error' => null,
 				)
 			)
 		);
@@ -99,13 +99,13 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 				'mork' => array(
 					'version' => Mork_Common_Commons::VERSION_1_0,
 					'status' => Mork_Server_Response::ERROR,
+					'data' => null,
 					'error' => array(
 						'code' => Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
 						'message' => 'Method "fooBar" not found',
 						'data' => array(
 							'method' => 'fooBar')
 					),
-					'result' => null
 				)
 			)
 		);
