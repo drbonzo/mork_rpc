@@ -42,7 +42,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::JSON_PARSE_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_Commons::INVALID_JSON_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithMethodNotFoundErrorWhenUnknownMethodGetsCalled()
@@ -107,7 +107,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithInternalServerErrorWhenAnyOtherExceptionIsThrown()
@@ -119,7 +119,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $response->getErrorCode());
 	}
 }
 

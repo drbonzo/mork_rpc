@@ -48,7 +48,7 @@ class Mork_Server_Server
 		}
 		catch ( Mork_Server_InvalidJSONInRequestException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::JSON_PARSE_ERROR, 'JSON was invalid', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INVALID_JSON_ERROR, 'JSON was invalid', null );
 		}
 		catch ( Mork_Server_InvalidRequestException $e )
 		{
@@ -68,11 +68,11 @@ class Mork_Server_Server
 		}
 		catch ( Mork_Server_ServerException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_ERROR, '', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, '', null );
 		}
 		catch ( Exception $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_ERROR, '', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, '', null );
 		}
 	}
 }
