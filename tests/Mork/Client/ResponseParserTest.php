@@ -156,6 +156,15 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array('foo' => 'bar', 'id' => 4), $response->getData());
 	}
 	
+	public function testCorrectSuccessfullResponseAllowsNullData()
+	{
+		$this->successResponseArray['mork']['data'] = null;
+		$json = json_encode($this->successResponseArray);
+		$response = $this->responseParser->parseResponse( $json, $this->request );
+		
+		$this->assertNull($response->getData());
+	}
+	
 	public function testCorrectErrorResponseResultsInExceptionWithRequestWithResponseObject()
 	{
 		try
@@ -178,6 +187,31 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 			$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorCode());
 			$this->assertEquals('Your request failed', $response->getErrorMessage());
 			$this->assertEquals(array('toss' => 'imba'), $response->getErrorData() );
+		}
+	}
+	
+	public function testCorrectErrorResponseAllowsForNullErrorDataAndNullErrorMessage()
+	{
+		try
+		{
+			$this->errorResponseArray['mork']['error']['data'] = null;
+			$this->errorResponseArray['mork']['error']['message'] = null;
+	
+			$json = json_encode($this->errorResponseArray);
+			$this->setExpectedException('Mork_Client_InvalidResponseException');
+			$this->responseParser->parseResponse( $json, $this->request );
+				
+			$this->assertFalse(true, 'Exception should have been thrown');
+		}
+		catch ( Mork_Client_ErrorResponseException $e )
+		{
+			$this->assertTrue(true, "we should have exception here");
+				
+			$response = $request->getResponse();
+			$this->assertInstanceOf('Mork_Client_Response', $response);
+				
+			$this->assertNull( $response->getErrorMessage());
+			$this->assertNull( $response->getErrorData() );
 		}
 	}
 }

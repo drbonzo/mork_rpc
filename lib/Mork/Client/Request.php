@@ -16,6 +16,7 @@ class Mork_Client_Request
 	{
 		$this->methodName = $methodName;
 		$this->version = Mork_Common_Commons::VERSION_1_0;
+		$this->params = array();
 	}
 	
 	// METHOD 

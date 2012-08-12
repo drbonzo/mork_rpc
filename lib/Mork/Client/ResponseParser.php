@@ -75,19 +75,19 @@ class Mork_Client_ResponseParser
 
 		if ( $morkData['status'] == Mork_Common_BaseResponse::OK )
 		{
-			if ( ! isset($morkData['data']))
+			if ( ! array_key_exists('data', $morkData))
 			{
 				throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.data" for successfull response');
 			}
 		}
-
+		
 		if ( $morkData['status'] == Mork_Server_Response::ERROR )
 		{
 			if ( isset($morkData['error']))
 			{
 				$errorData = $morkData['error'];
 				
-				if ( ! isset($errorData['data']))
+				if ( ! array_key_exists('data', $errorData))
 				{
 					throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.error.data" for error response');
 				}
