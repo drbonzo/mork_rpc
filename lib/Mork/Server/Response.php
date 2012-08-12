@@ -28,13 +28,19 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	}
 	
 	/**
-	 * @param string $errorCode - see constants in Mork_Common_Commons
+	 * @param string $errorStatus - see constants in this class; if different from APPLICATION_ERROR then code := status
+	 * @param string $errorCode 
 	 * @param string $errorMessage
 	 * @param mixed $data
 	 */
-	private function setErrorData($errorCode, $errorMessage, $data)
+	private function setErrorData($errorStatus, $errorCode, $errorMessage, $data)
 	{
-		$this->status = Mork_Server_Response::ERROR;
+		if ( $errorStatus != Mork_Server_Response::APPLICATION_ERROR )
+		{
+			$errorCode = $errorStatus;
+		}
+		
+		$this->status = $errorStatus;
 		$this->errorCode = $errorCode;
 		$this->errorMessage = $errorMessage;
 		$this->errorData = $data;
@@ -42,18 +48,18 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		$this->successData = null;
 		
 		
-		if ( $errorCode == Mork_Common_Commons::INTERNAL_SERVER_ERROR )
+		if ( $errorCode == Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR )
 		{
 			$this->headers = array(
 				'HTTP/1.0 500 Internal Server Error' => 500
 			);
 		}
 		else if ( in_array( $errorCode, array( 
-			Mork_Common_Commons::INVALID_JSON_ERROR,
-			Mork_Common_Commons::INVALID_REQUEST_ERROR,
-			Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
-			Mork_Common_Commons::AUTHENTICATION_ERROR,
-			Mork_Common_Commons::APPLICATION_ERROR,
+			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
+			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
+			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::APPLICATION_ERROR,
 		) ) )
 		{
 			$this->headers = array(
@@ -83,16 +89,30 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	
 	/**
 	 * 
+	 * @param string $errorStatus
+	 * @param string $errorMessage
+	 * @param mixed $errorData
+	 * 
+	 * @return Mork_Server_Response
+	 */
+	static public function newErrorResponse($errorStatus, $errorMessage, $errorData = null)
+	{
+		$response = new Mork_Server_Response();
+		$response->setErrorData($errorStatus, $errorStatus, $errorMessage, $errorData);
+		return $response;
+	}
+	
+	/**
 	 * @param string $errorCode
 	 * @param string $errorMessage
 	 * @param mixed $errorData
 	 * 
 	 * @return Mork_Server_Response
 	 */
-	static public function newErrorResponse($errorCode, $errorMessage, $errorData = null)
+	static public function newApplicationErrorResponse($errorCode, $errorMessage, $errorData = null)
 	{
 		$response = new Mork_Server_Response();
-		$response->setErrorData($errorCode, $errorMessage, $errorData);
+		$response->setErrorData(Mork_Server_Response::APPLICATION_ERROR, $errorCode, $errorMessage, $errorData);
 		return $response;
 	}
 	

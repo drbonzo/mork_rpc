@@ -68,7 +68,7 @@ class Mork_Client_ResponseParser
 			throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.status" property');
 		}
 
-		if ( ! in_array($morkData['status'], array( Mork_Common_BaseResponse::OK, Mork_Server_Response::ERROR )) )
+		if ( ! in_array($morkData['status'], Mork_Common_BaseResponse::getAllStatuses() ) )
 		{
 			throw new Mork_Client_InvalidResponseException($request, 'Invalid "mork.status" value');
 		}
@@ -81,7 +81,7 @@ class Mork_Client_ResponseParser
 			}
 		}
 		
-		if ( $morkData['status'] == Mork_Server_Response::ERROR )
+		if ( $morkData['status'] != Mork_Server_Response::OK )
 		{
 			if ( isset($morkData['error']))
 			{

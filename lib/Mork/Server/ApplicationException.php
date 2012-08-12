@@ -1,16 +1,38 @@
 <?php 
 class Mork_Server_ApplicationException extends Mork_Server_ServerException
 {
+	private $errorCode = null;
+	
+	private $errorMessage = null;
+	
 	private $errorData = null;
 	
 	/**
-	 * @param string $message
+	 * @param string $errorCode
+	 * @param string $errorMessage
 	 * @param mixed $errorData
 	 */
-	public function __construct($message, $errorData = null)
+	public function __construct($errorCode, $errorMessage, $errorData = null)
 	{
-		parent::__construct($message);
+		$this->errorCode = $errorCode;
+		$this->errorMessage = $errorMessage;
 		$this->errorData = $errorData;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getErrorCode()
+	{
+		return $this->errorCode;
+	}
+	
+	/**
+	 * @return string or null
+	 */
+	public function getErrorMessage()
+	{
+		return $this->errorMessage;
 	}
 	
 	/**

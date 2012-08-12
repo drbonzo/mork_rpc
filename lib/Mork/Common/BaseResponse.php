@@ -2,7 +2,12 @@
 abstract class Mork_Common_BaseResponse
 {
 	const OK = 'OK';
-	const ERROR = 'ERROR';
+	const INVALID_JSON_ERROR = 'INVALID_JSON_ERROR';
+	const INVALID_REQUEST_ERROR = 'INVALID_REQUEST_ERROR';
+	const METHOD_NOT_FOUND_ERROR = 'METHOD_NOT_FOUND_ERROR';
+	const INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
+	const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+	const APPLICATION_ERROR = 'APPLICATION_ERROR';
 	
 	protected $status;
 	
@@ -35,7 +40,12 @@ abstract class Mork_Common_BaseResponse
 	
 	public function isError()
 	{
-		return $this->status == Mork_Server_Response::ERROR;
+		return ! $this->isOK();
+	}
+	
+	public function getStatus()
+	{
+		return $this->status;
 	}
 	
 	/**
@@ -60,6 +70,19 @@ abstract class Mork_Common_BaseResponse
 	public function getErrorData()
 	{
 		return $this->errorData;
+	}
+	
+	static public function getAllStatuses()
+	{
+		return array(
+			Mork_Common_BaseResponse::OK,
+			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
+			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
+			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::APPLICATION_ERROR,
+		);
 	}
 	
 }

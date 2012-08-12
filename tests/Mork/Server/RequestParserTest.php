@@ -37,15 +37,6 @@ class Mork_Server_RequestParserTest extends PHPUnit_Framework_TestCase
 		$this->requestParser->parseRequest($json);
 	}
 	
-// 	public function testRequestWithMorkNotBeingAnArrayResultsInException()
-// 	{
-// 		$this->requestArray['mork'] = 'foo';
-// 		$json = json_encode($this->requestArray);
-//		
-// 		$this->setExpectedException('Mork_Server_InvalidRequestException');
-// 		$this->requestParser->parseRequest($json);
-// 	} // if mork is not an array - then other tests conver this
-	
 	public function testRequestMissingVersionPropertyResultsInException()
 	{
 		unset( $this->requestArray['mork']['version'] );

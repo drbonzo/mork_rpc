@@ -8,17 +8,22 @@ class Mork_Server_ApplicationExceptionTest extends PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->exception = new Mork_Server_ApplicationException('Some error', array('error' => 'data') );
+		$this->exception = new Mork_Server_ApplicationException('FOO_FAILED', 'Foo failed at 4', array('foo' => 'bar'));
+	}
+	
+	public function testExceptionHasErrorCode()
+	{
+		$this->assertEquals('FOO_FAILED', $this->exception->getErrorCode());
 	}
 
-	public function testExceptionHasMessage()
+	public function testExceptionHasErrorMessage()
 	{
-		$this->assertEquals('Some error', $this->exception->getMessage() );
+		$this->assertEquals('Foo failed at 4', $this->exception->getErrorMessage() );
 	}
 
 	public function testExceptionHasErrorData()
 	{
-		$this->assertEquals(array('error' => 'data'), $this->exception->getErrorData() );
+		$this->assertEquals(array('foo' => 'bar'), $this->exception->getErrorData() );
 	}
 
 }

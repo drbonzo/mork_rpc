@@ -25,7 +25,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 		$successServerResponse = Mork_Server_Response::newSuccessResponse(array('foo' => 'bar', 'id' => 4));
 		$this->successResponseArray = json_decode($successServerResponse->getAsJSON(), true);
 		
-		$errorServerResponse = Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INVALID_REQUEST_ERROR, 'Your request failed', array('toss' => 'imba'));
+		$errorServerResponse = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, 'Your request failed', array('toss' => 'imba'));
 		$this->errorResponseArray = json_decode($errorServerResponse->getAsJSON(), true);
 	}
 	
@@ -184,7 +184,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 			$response = $request->getResponse();
 			$this->assertInstanceOf('Mork_Client_Response', $response);
 			
-			$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorCode());
+			$this->assertEquals(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, $response->getErrorCode());
 			$this->assertEquals('Your request failed', $response->getErrorMessage());
 			$this->assertEquals(array('toss' => 'imba'), $response->getErrorData() );
 		}

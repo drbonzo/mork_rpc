@@ -48,31 +48,31 @@ class Mork_Server_Server
 		}
 		catch ( Mork_Server_InvalidJSONInRequestException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INVALID_JSON_ERROR, 'JSON was invalid', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_JSON_ERROR, 'JSON was invalid', null );
 		}
 		catch ( Mork_Server_InvalidRequestException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INVALID_REQUEST_ERROR, $e->getMessage(), null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, $e->getMessage(), null );
 		}
 		catch ( Mork_Server_MethodNotFoundException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, sprintf('Method "%s" was not found', $e->getMethodName() ), null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, sprintf('Method "%s" was not found', $e->getMethodName() ), null );
 		}
 		catch ( Mork_Server_AuthenticationException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::AUTHENTICATION_ERROR, $e->getMessage(), null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, $e->getMessage(), null );
 		}
 		catch ( Mork_Server_ApplicationException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::APPLICATION_ERROR, $e->getMessage(), $e->getErrorData() );
+			return Mork_Server_Response::newApplicationErrorResponse($e->getErrorCode(), $e->getErrorMessage(), $e->getErrorData() );
 		}
 		catch ( Mork_Server_ServerException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, '', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, '', null );
 		}
 		catch ( Exception $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, '', null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, '', null );
 		}
 	}
 }

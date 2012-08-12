@@ -10,11 +10,17 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	 * @var Mork_Server_Response
 	 */
 	private $errorResponse = null;
+	
+	/**
+	 * @var Mork_Server_Response
+	 */
+	private $applicationErrorResponse = null;
 
 	public function setUp()
 	{
 		$this->successResponse = Mork_Server_Response::newSuccessResponse(array('foo' => 'bar', 'id' => 4 ));
-		$this->errorResponse = Mork_Server_Response::newErrorResponse(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, 'Method "fooBar" not found', array( 'method' => 'fooBar') );
+		$this->errorResponse = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, 'Method "fooBar" not found', array( 'method' => 'fooBar') );
+		$this->applicationErrorResponse = Mork_Server_Response::newApplicationErrorResponse('FOO_FAILED', 'Foo has failed because of param "bar"', array( 'bar' => '444'));
 	}
 	
 	//
@@ -32,48 +38,27 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($this->successResponse->isError());
 	}
 	
+	public function testNewSuccessResponseHasStatusOK()
+	{
+		$this->assertEquals(Mork_Server_Response::OK, $this->successResponse->getStatus());
+	}
+	
 	public function testNewSuccessResponseHasNoErrorCode()
 	{
 		$this->assertNull($this->successResponse->getErrorCode());
 	}
 	
-	public function testNewSuccessResponseHasErrorData()
+	public function testNewSuccessResponseHasNoErrorMessage()
 	{
-		$this->assertEquals(array( 'foo' => 'bar', 'id' => 4 ), $this->successResponse->getData() );
+		$this->assertNull($this->successResponse->getErrorMessage());
 	}
 	
-	
-	// ERROR
-	
-	public function testNewErrorResponseIsNotOK()
+	public function testNewSuccessResponseHasNoErrorData()
 	{
-		$this->assertFalse($this->errorResponse->isOK());
+		$this->assertNull($this->successResponse->getErrorData() );
 	}
 	
-	public function testNewErrorResponseIsError()
-	{
-		$this->assertTrue($this->errorResponse->isError());
-	}
-	
-	public function testNewErrorResponseHasErrorCode()
-	{
-		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $this->errorResponse->getErrorCode());
-	}
-	
-	public function testNewErrorResponseHasErrorMessage()
-	{
-		$this->assertEquals('Method "fooBar" not found', $this->errorResponse->getErrorMessage());
-	}
-	
-	public function testNewErrorResponseHasErrorData()
-	{
-		$this->assertEquals(array( 'method' => 'fooBar'), $this->errorResponse->getErrorData() );
-	}
-	
-	//
-	// JSON
-	//
-	public function testSuccessResponseReturnsJSON()
+	public function testNewSuccessResponseReturnsJSON()
 	{
 		$expectedJSON = json_encode(
 			array(
@@ -88,20 +73,53 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 				)
 			)
 		);
-		
+	
 		$this->assertEquals($expectedJSON, $this->successResponse->getAsJSON());
 	}
-
-	public function testErrorResponseReturnsJSON()
+	
+	
+	// ERROR
+	public function testNewErrorResponseIsNotOK()
+	{
+		$this->assertFalse($this->errorResponse->isOK());
+	}
+	
+	public function testNewErrorResponseIsError()
+	{
+		$this->assertTrue($this->errorResponse->isError());
+	}
+	
+	public function testNewErrorResponseDoesNotHaveStatusOK()
+	{
+		$this->assertNotEquals(Mork_Server_Response::OK, $this->errorResponse->getStatus());
+		$this->assertEquals(Mork_Server_Response::METHOD_NOT_FOUND_ERROR, $this->errorResponse->getStatus());
+	}
+	
+	public function testNewErrorResponseHasErrorCode()
+	{
+		$this->assertEquals(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, $this->errorResponse->getErrorCode());
+	}
+	
+	public function testNewErrorResponseHasErrorMessage()
+	{
+		$this->assertEquals('Method "fooBar" not found', $this->errorResponse->getErrorMessage());
+	}
+	
+	public function testNewErrorResponseHasErrorData()
+	{
+		$this->assertEquals(array( 'method' => 'fooBar'), $this->errorResponse->getErrorData() );
+	}
+	
+	public function testNewErrorResponseReturnsJSON()
 	{
 		$expectedJSON = json_encode(
 			array(
 				'mork' => array(
 					'version' => Mork_Common_Commons::VERSION_1_0,
-					'status' => Mork_Server_Response::ERROR,
+					'status' => Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
 					'data' => null,
 					'error' => array(
-						'code' => Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
+						'code' => Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
 						'message' => 'Method "fooBar" not found',
 						'data' => array(
 							'method' => 'fooBar')
@@ -113,6 +131,61 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedJSON, $this->errorResponse->getAsJSON());
 	}
 	
+	
+	// APPLICATION ERROR
+	public function testNewApplicationErrorResponseIsNotOK()
+	{
+		$this->assertFalse($this->applicationErrorResponse->isOK());
+	}
+	
+	public function testNewApplicationErrorResponseIsError()
+	{
+		$this->assertTrue($this->applicationErrorResponse->isError());
+	}
+	
+	public function testNewApplicationErrorResponseDoesNotHaveStatusOK()
+	{
+		$this->assertNotEquals(Mork_Server_Response::OK, $this->applicationErrorResponse->getStatus());
+		$this->assertEquals(Mork_Server_Response::APPLICATION_ERROR, $this->applicationErrorResponse->getStatus());
+	}
+	
+	public function testNewApplicationErrorResponseHasCustomErrorCode()
+	{
+		$this->assertEquals('FOO_FAILED', $this->applicationErrorResponse->getErrorCode());
+	}
+	
+	public function testNewApplicationErrorResponseHasErrorMessage()
+	{
+		$this->assertEquals('Foo has failed because of param "bar"', $this->applicationErrorResponse->getErrorMessage());
+	}
+	
+	public function testNewApplicationErrorResponseHasErrorData()
+	{
+		$this->assertEquals(array( 'bar' => '444'), $this->applicationErrorResponse->getErrorData() );
+	}
+	
+	public function testNewApplicationErrorResponseReturnsJSON()
+	{
+		$expectedJSON = json_encode(
+			array(
+				'mork' => array(
+					'version' => Mork_Common_Commons::VERSION_1_0,
+					'status' => Mork_Common_BaseResponse::APPLICATION_ERROR,
+					'data' => null,
+					'error' => array(
+						'code' => 'FOO_FAILED',
+						'message' => 'Foo has failed because of param "bar"',
+						'data' => array(
+							'bar' => '444')
+					),
+				)
+			)
+		);
+	
+		$this->assertEquals($expectedJSON, $this->applicationErrorResponse->getAsJSON());
+	}	
+	
+	
 	// HEADERS
 	
 	public function testSuccessResponseHasHTTPStatus200Header()
@@ -123,7 +196,7 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	
 	public function testErrorResponseWithInternalServerErrorHasHTTPStatus500Header()
 	{
-		$response = Mork_Server_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, 'fail' );
+		$response = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, 'fail' );
 		$headers = $response->getHeaders();
 		$this->assertTrue(array_key_exists('HTTP/1.0 500 Internal Server Error', $headers));
 	}
@@ -131,11 +204,11 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	public function testErrorResponseWithoutInternalServerErrorHasHTTPStatus400Header()
 	{
 		$otherErrorCodes = array(
-			Mork_Common_Commons::INVALID_JSON_ERROR,
-			Mork_Common_Commons::INVALID_REQUEST_ERROR,
-			Mork_Common_Commons::METHOD_NOT_FOUND_ERROR,
-			Mork_Common_Commons::AUTHENTICATION_ERROR,
-			Mork_Common_Commons::APPLICATION_ERROR,
+			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
+			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
+			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::APPLICATION_ERROR,
 		);
 		
 		foreach ( $otherErrorCodes as $errorCode )

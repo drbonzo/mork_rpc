@@ -14,7 +14,7 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->successResponse = Mork_Client_Response::newSuccessResponse(array('foo' => 'bar'));
-		$this->errorResponse = Mork_Client_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, 'Server failed', array('php' => 'ruby') );
+		$this->errorResponse = Mork_Client_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, 'Server failed', array('php' => 'ruby') );
 	}
 	
 	// SUCCESS
@@ -44,7 +44,7 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 	public function testErrorResponseHasErrorCodeMessageAndData()
 	{
 		$this->assertEquals(array('php'=>'ruby'), $this->errorResponse->getErrorData());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $this->errorResponse->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, $this->errorResponse->getErrorCode());
 		$this->assertEquals('Server failed', $this->errorResponse->getErrorMessage());
 		
 		$this->assertNull($this->errorResponse->getData());

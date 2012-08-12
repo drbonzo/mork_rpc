@@ -48,7 +48,7 @@ class Mork_Server_RequestTest extends PHPUnit_Framework_TestCase
 	
 	public function testRequestWithErrorResponseSetHasResponse()
 	{
-		$this->request->returnErrorResponse(Mork_Common_Commons::INVALID_JSON_ERROR, 'JSON is invalid', array('foo' => 'bar'));
+		$this->request->returnErrorResponse(Mork_Common_BaseResponse::INVALID_JSON_ERROR, 'JSON is invalid', array('foo' => 'bar'));
 		
 		$response = $this->request->getResponse();
 		$this->assertInstanceOf('Mork_Server_Response', $response );

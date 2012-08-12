@@ -42,7 +42,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INVALID_JSON_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::INVALID_JSON_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithMethodNotFoundErrorWhenUnknownMethodGetsCalled()
@@ -55,7 +55,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::METHOD_NOT_FOUND_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithInvalidRequestErrorWhenRequestWasInvalid()
@@ -69,7 +69,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, $response->getErrorCode());
 	}
 
 	public function testServerRespondsWithAuthenticationErrorWhenAuthFailed()
@@ -81,7 +81,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::AUTHENTICATION_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithApplicationErrorWhenApplicationExceptionIsThrown()
@@ -93,7 +93,8 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::APPLICATION_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::APPLICATION_ERROR, $response->getStatus());
+		$this->assertEquals('SERVICE_DISABLED', $response->getErrorCode());
 		$this->assertEquals('Service is disabled', $response->getErrorMessage());
 		$this->assertEquals(array('lol' => 'rotfl'), $response->getErrorData() );
 	}
@@ -107,7 +108,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, $response->getErrorCode());
 	}
 	
 	public function testServerRespondsWithInternalServerErrorWhenAnyOtherExceptionIsThrown()
@@ -119,7 +120,7 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, $response->getErrorCode());
 	}
 }
 
@@ -137,7 +138,7 @@ class Mork_Server_ServerTest_SampleHandler
 	
 	public function forceApplicationFail()
 	{
-		throw new Mork_Server_ApplicationException('Service is disabled', array( 'lol' => 'rotfl' ));
+		throw new Mork_Server_ApplicationException('SERVICE_DISABLED', 'Service is disabled', array( 'lol' => 'rotfl' ));
 	}
 	
 	public function forceServerFail()
@@ -150,7 +151,3 @@ class Mork_Server_ServerTest_SampleHandler
 		throw new InvalidArgumentException();
 	}
 }
-
-
-// * @throws Mork_Server_InvalidJSONInRequestException
-// * @throws Mork_Server_InvalidRequestException
