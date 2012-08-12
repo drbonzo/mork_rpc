@@ -2,6 +2,7 @@
 $_files = array(
 	'Mork/Common/Commons.php',
 	'Mork/Common/Exception.php',
+	'Mork/Common/BaseResponse.php',
 	
 	'Mork/Client/ClientException.php',
 	'Mork/Client/ErrorResponseException.php',

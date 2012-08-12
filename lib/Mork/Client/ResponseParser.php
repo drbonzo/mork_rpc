@@ -17,7 +17,7 @@ class Mork_Client_ResponseParser
 		$this->validateResponse($responseArray, $request);
 		
 		$morkData = $responseArray['mork'];
-		if ( $morkData['status'] == Mork_Server_Response::OK )
+		if ( $morkData['status'] == Mork_Common_BaseResponse::OK )
 		{
 			$response = Mork_Client_Response::newSuccessResponse($morkData['data']);
 			$request->setResponse($response);
@@ -68,12 +68,12 @@ class Mork_Client_ResponseParser
 			throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.status" property');
 		}
 
-		if ( ! in_array($morkData['status'], array( Mork_Server_Response::OK, Mork_Server_Response::ERROR )) )
+		if ( ! in_array($morkData['status'], array( Mork_Common_BaseResponse::OK, Mork_Server_Response::ERROR )) )
 		{
 			throw new Mork_Client_InvalidResponseException($request, 'Invalid "mork.status" value');
 		}
 
-		if ( $morkData['status'] == Mork_Server_Response::OK )
+		if ( $morkData['status'] == Mork_Common_BaseResponse::OK )
 		{
 			if ( ! isset($morkData['data']))
 			{

@@ -39,7 +39,7 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	
 	public function testNewSuccessResponseHasErrorData()
 	{
-		$this->assertEquals(array( 'foo' => 'bar', 'id' => 4 ), $this->successResponse->getSuccessData() );
+		$this->assertEquals(array( 'foo' => 'bar', 'id' => 4 ), $this->successResponse->getData() );
 	}
 	
 	
@@ -79,7 +79,7 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 			array(
 				'mork' => array(
 					'version' => Mork_Common_Commons::VERSION_1_0,
-					'status' => Mork_Server_Response::OK,
+					'status' => Mork_Common_BaseResponse::OK,
 					'data' => array(
 						'foo' => 'bar',
 						'id' => 4

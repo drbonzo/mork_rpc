@@ -98,7 +98,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 	// data
 	public function testSuccessResponseWithoutDataResultsInException()
 	{
-		$this->successResponseArray['mork']['status'] = Mork_Server_Response::OK;
+		$this->successResponseArray['mork']['status'] = Mork_Common_BaseResponse::OK;
 		
 		unset($this->successResponseArray['mork']['data']);
 		$json = json_encode($this->successResponseArray);

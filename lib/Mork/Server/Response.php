@@ -1,29 +1,12 @@
 <?php
 // TODO we can introduce subclasses?
-class Mork_Server_Response
+class Mork_Server_Response extends Mork_Common_BaseResponse
 {
-	const OK = 'OK';
-	const ERROR = 'ERROR';
-	
-	private $status;
-	
-	private $successData;
-	
-	private $errorData;
-	
-	private $errorCode = null;
-	
-	private $errorMessage = null;
-	
 	private $headers = array();
 	
-	private function __construct()
+	protected function __construct()
 	{
-		$this->status = Mork_Server_Response::OK;
-		$this->successData = array();
-		$this->errorData = null;
-		$this->errorCode = null;
-		$this->errorMessage = null;
+		parent::__construct();
 		$this->headers = array();
 	}
 	
@@ -32,7 +15,7 @@ class Mork_Server_Response
 	 */
 	private function setSuccessData($data)
 	{
-		$this->status = Mork_Server_Response::OK;
+		$this->status = Mork_Common_BaseResponse::OK;
 		$this->successData = $data;
 		
 		$this->errorData = null;
@@ -111,48 +94,6 @@ class Mork_Server_Response
 		$response = new Mork_Server_Response();
 		$response->setErrorData($errorCode, $errorMessage, $errorData);
 		return $response;
-	}
-	
-	public function isOK()
-	{
-		return $this->status == Mork_Server_Response::OK;
-	}
-	
-	public function isError()
-	{
-		return $this->status == Mork_Server_Response::ERROR;
-	}
-	
-	/**
-	 * @return string|null
-	 */
-	public function getErrorCode()
-	{
-		return $this->errorCode;
-	}
-	
-	/**
-	 * @return string|null
-	 */
-	public function getErrorMessage()
-	{
-		return $this->errorMessage;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getErrorData()
-	{
-		return $this->errorData;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getSuccessData()
-	{
-		return $this->successData;
 	}
 	
 	public function getAsJSON()
