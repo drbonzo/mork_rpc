@@ -175,7 +175,6 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 			$response = $request->getResponse();
 			$this->assertInstanceOf('Mork_Client_Response', $response);
 			
-			print_r($this->errorResponseArray);
 			$this->assertEquals(Mork_Common_Commons::INVALID_REQUEST_ERROR, $response->getErrorCode());
 			$this->assertEquals('Your request failed', $response->getErrorMessage());
 			$this->assertEquals(array('toss' => 'imba'), $response->getErrorData() );

@@ -4,15 +4,50 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @var Mork_Client_Response
 	 */
-	private $response = null;
+	private $successResponse = null;
+	
+	/**
+	 * @var Mork_Client_Response
+	 */
+	private $errorResponse = null;
 	
 	public function setUp()
 	{
-		$this->response = Mork_Client_Response::newSuccessResponse(array('foo' => 'bar', 'lotr' => 'epic'));
+		$this->successResponse = Mork_Client_Response::newSuccessResponse(array('foo' => 'bar'));
+		$this->errorResponse = Mork_Client_Response::newErrorResponse(Mork_Common_Commons::INTERNAL_SERVER_ERROR, 'Server failed', array('php' => 'ruby') );
 	}
 	
-	public function testResponseCanReturnItsData()
+	// SUCCESS
+	
+	public function testSuccessResponseIsOK()
 	{
-		$this->assertEquals(array('foo' => 'bar', 'lotr' => 'epic'), $this->response->getData());
+		$this->assertTrue($this->successResponse->isOK() );
+		$this->assertFalse($this->successResponse->isError());
 	}
+	
+	public function testSuccessResponseHasData()
+	{
+		$this->assertEquals(array('foo'=>'bar'), $this->successResponse->getData());
+		$this->assertNull($this->successResponse->getErrorData());
+		$this->assertNull($this->successResponse->getErrorCode());
+		$this->assertNull($this->successResponse->getErrorMessage());
+	}
+	
+	// ERROR
+	
+	public function testErrorResponseIsError()
+	{
+		$this->assertFalse($this->errorResponse->isOK());
+		$this->assertTrue($this->errorResponse->isError());
+	}
+
+	public function testErrorResponseHasErrorCodeMessageAndData()
+	{
+		$this->assertEquals(array('php'=>'ruby'), $this->errorResponse->getErrorData());
+		$this->assertEquals(Mork_Common_Commons::INTERNAL_SERVER_ERROR, $this->errorResponse->getErrorCode());
+		$this->assertEquals('Server failed', $this->errorResponse->getErrorMessage());
+		
+		$this->assertNull($this->errorResponse->getData());
+	}
+	
 }
