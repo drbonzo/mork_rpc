@@ -7,7 +7,7 @@ class Mork_Client_ResponseParser
 	 *
 	 * @return Mork_Client_Response
 	 *
-	 * @throws Mork_Client_InvalidJSONInResponseException
+	 * @throws Mork_Client_ErrorResponseException
 	 * @throws Mork_Client_InvalidResponseException
 	 */
 	public function parseResponse($jsonString, Mork_Client_Request $request)
@@ -34,11 +34,17 @@ class Mork_Client_ResponseParser
 		}
 	}
 
+	/**
+	 * @param array $responseArray
+	 * @param Mork_Client_Request $request
+	 * 
+	 * @throws Mork_Client_InvalidResponseException
+	 */
 	private function validateResponse($responseArray, Mork_Client_Request $request)
 	{
 		if ( is_null($responseArray))
 		{
-			throw new Mork_Client_InvalidJSONInResponseException($request);
+			throw new Mork_Client_InvalidResponseException($request, 'Invalid JSON in response');
 		}
 
 		if ( ! isset($responseArray['mork']) )
@@ -81,7 +87,7 @@ class Mork_Client_ResponseParser
 			}
 		}
 		
-		if ( $morkData['status'] != Mork_Server_Response::OK )
+		if ( $morkData['status'] != Mork_Client_Response::OK )
 		{
 			if ( isset($morkData['error']))
 			{

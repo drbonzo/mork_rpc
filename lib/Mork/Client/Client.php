@@ -30,7 +30,11 @@ class Mork_Client_Client
 	 * 
 	 * @param Mork_Client_Request $request
 	 * 
+	 * @return Mork_Client_Response
+	 * 
 	 * @throws Mork_Client_ConnectionException
+	 * @throws Mork_Client_ErrorResponseException
+	 * @throws Mork_Client_InvalidResponseException
 	 */
 	public function sendRequest(Mork_Client_Request $request)
 	{
@@ -41,7 +45,9 @@ class Mork_Client_Client
 			throw new Mork_Client_ConnectionException($request);
 		}
 		
-		return $rawResponse; // FIXME
+		$responseParser = new Mork_Client_ResponseParser();
+		$response = $responseParser->parseResponse($rawResponse, $request);
+		return $rawResponse;
 	}
 	
 	/**

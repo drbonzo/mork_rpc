@@ -13,8 +13,6 @@ $_files = array(
 	'Mork/Client/InternalServerException.php',
 	'Mork/Client/InvalidRequestException.php',
 	'Mork/Client/InvalidResponseException.php',
-	'Mork/Client/InvalidJSONInRequestException.php',
-	'Mork/Client/InvalidJSONInResponseException.php',
 	'Mork/Client/MethodNotFoundException.php',
 	'Mork/Client/Request.php',
 	'Mork/Client/Response.php',

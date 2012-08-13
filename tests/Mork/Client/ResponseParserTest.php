@@ -33,7 +33,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 	
 	public function testInvalidJSONResultsInException()
 	{
-		$this->setExpectedException('Mork_Client_InvalidJSONInResponseException');
+		$this->setExpectedException('Mork_Client_InvalidResponseException');
 		$this->responseParser->parseResponse('asda sdko}} ajsd opiajsd0 9{{ asu0 d9quw0', $this->request);
 	}
 	
