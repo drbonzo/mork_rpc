@@ -9,6 +9,7 @@ $_files = array(
 	'Mork/Client/Client.php',
 	'Mork/Client/ConnectionException.php',
 	'Mork/Client/InvalidResponseException.php',
+	'Mork/Client/ServerErrorResponseException.php',
 	'Mork/Client/Request.php',
 	'Mork/Client/Response.php',
 	'Mork/Client/ResponseParser.php',

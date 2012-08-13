@@ -85,4 +85,23 @@ abstract class Mork_Common_BaseResponse
 		);
 	}
 	
+	static public function getServerCausedErrorStatuses()
+	{
+		return array(
+			Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR,
+		);
+		
+	}
+	
+	static public function getClientCausedErrorStatuses()
+	{
+		return array(
+			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
+			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
+			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::APPLICATION_ERROR,
+		);
+	}
+	
 }

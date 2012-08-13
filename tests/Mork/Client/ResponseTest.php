@@ -23,6 +23,9 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertTrue($this->successResponse->isOK() );
 		$this->assertFalse($this->successResponse->isError());
+		
+		$this->assertFalse($this->successResponse->isServerCausedError());
+		$this->assertFalse($this->successResponse->isClientCausedError());
 	}
 	
 	public function testSuccessResponseHasData()
@@ -48,6 +51,50 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Server failed', $this->errorResponse->getErrorMessage());
 		
 		$this->assertNull($this->errorResponse->getData());
+	}
+	
+	//
+	
+	public function testINTERNAL_SERVER_ERRORErrorCausesServerCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::INTERNAL_SERVER_ERROR, 'Foo', null);
+		$this->assertTrue($response->isServerCausedError());
+		$this->assertFalse($response->isClientCausedError());
+	}
+
+	public function testINVALID_JSON_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::INVALID_JSON_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+	
+	public function testINVALID_REQUEST_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::INVALID_REQUEST_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+	
+	public function testMETHOD_NOT_FOUND_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::METHOD_NOT_FOUND_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+	
+	public function testAUTHENTICATION_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::AUTHENTICATION_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+
+	public function testAPPLICATION_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::APPLICATION_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
 	}
 	
 }

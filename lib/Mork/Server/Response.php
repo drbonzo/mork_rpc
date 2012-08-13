@@ -23,7 +23,7 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		$this->errorMessage = null;
 		
 		$this->headers = array(
-			'HTTP/1.0 200 OK' => 200	
+			'HTTP/1.1 200 OK' => 200	
 		);
 	}
 	
@@ -33,28 +33,16 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	 * @param string $errorMessage
 	 * @param mixed $data
 	 */
-	private function setErrorData($errorStatus, $errorCode, $errorMessage, $data)
+	private function initResponseHeaders()
 	{
-		if ( $errorStatus != Mork_Server_Response::APPLICATION_ERROR )
-		{
-			$errorCode = $errorStatus;
-		}
-		
-		$this->status = $errorStatus;
-		$this->errorCode = $errorCode;
-		$this->errorMessage = $errorMessage;
-		$this->errorData = $data;
-		
-		$this->successData = null;
-		
-		
-		if ( $errorCode == Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR )
+		$status = $this->status;
+		if ( $status == Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR )
 		{
 			$this->headers = array(
-				'HTTP/1.0 500 Internal Server Error' => 500
+				'HTTP/1.1 500 Internal Server Error' => 500
 			);
 		}
-		else if ( in_array( $errorCode, array( 
+		else if ( in_array( $status, array( 
 			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
 			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
 			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
@@ -63,13 +51,13 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		) ) )
 		{
 			$this->headers = array(
-				'HTTP/1.0 400 Bad Request' => 400
+				'HTTP/1.1 400 Bad Request' => 400
 			);
 		}
 		else 
 		{
 			$this->headers = array(
-				'HTTP/1.0 500 Internal Server Error' => 500
+				'HTTP/1.1 500 Internal Server Error' => 500
 			);
 		}
 				
@@ -98,7 +86,16 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	static public function newErrorResponse($errorStatus, $errorMessage, $errorData = null)
 	{
 		$response = new Mork_Server_Response();
-		$response->setErrorData($errorStatus, $errorStatus, $errorMessage, $errorData);
+		
+		$errorCode = $errorStatus;
+		$response->status = $errorStatus;
+		$response->errorCode = $errorCode;
+		$response->errorMessage = $errorMessage;
+		$response->errorData = $errorData;
+		$response->successData = null;
+		
+		$response->initResponseHeaders();
+				
 		return $response;
 	}
 	
@@ -112,7 +109,14 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	static public function newApplicationErrorResponse($errorCode, $errorMessage, $errorData = null)
 	{
 		$response = new Mork_Server_Response();
-		$response->setErrorData(Mork_Server_Response::APPLICATION_ERROR, $errorCode, $errorMessage, $errorData);
+		$response->status = Mork_Server_Response::APPLICATION_ERROR;
+		$response->errorCode = $errorCode;
+		$response->errorMessage = $errorMessage;
+		$response->errorData = $errorData;
+		$response->successData = null;
+		
+		$response->initResponseHeaders();
+		
 		return $response;
 	}
 	

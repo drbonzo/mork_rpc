@@ -29,8 +29,19 @@ class Mork_Client_ResponseParser
 			$errorData = $morkData['error'];
 			$response = Mork_Client_Response::newErrorResponse($errorData['code'], $errorData['message'], $errorData['data'] );
 			$request->setResponse($response);
-			
-			throw new Mork_Client_ErrorResponseException($request);
+
+			if ( $response->isServerCausedError() )
+			{
+				throw new Mork_Client_ServerErrorResponseException($request);
+			}
+			else if ( $response->isClientCausedError() )
+			{
+				throw new Mork_Client_ErrorResponseException($request);
+			}
+			else
+			{
+				throw new Mork_Client_ErrorResponseException($request);
+			}
 		}
 	}
 

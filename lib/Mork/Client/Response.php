@@ -33,4 +33,30 @@ class Mork_Client_Response extends Mork_Common_BaseResponse
 		
 		return $response;
 	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isServerCausedError()
+	{
+		if ( $this->isOK() )
+		{
+			return false;
+		}
+		
+		return in_array($this->status, Mork_Client_Response::getServerCausedErrorStatuses() );
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isClientCausedError()
+	{
+		if ( $this->isOK() )
+		{
+			return false;
+		}
+		
+		return in_array($this->status, Mork_Client_Response::getClientCausedErrorStatuses() );
+	}
 }
