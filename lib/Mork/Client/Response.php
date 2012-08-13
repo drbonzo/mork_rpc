@@ -33,16 +33,4 @@ class Mork_Client_Response extends Mork_Common_BaseResponse
 		
 		return $response;
 	}
-	
-	static public function newApplicationErrorResponse($errorCode, $errorMessage, $errorData)
-	{
-		$response = new Mork_Client_Response();
-		$response->status = Mork_Client_Response::APPLICATION_ERROR;
-		
-		$response->errorCode = $errorCode;
-		$response->errorMessage = $errorMessage;
-		$response->errorData = $errorData;
-		
-		return $response;
-	}
 }
