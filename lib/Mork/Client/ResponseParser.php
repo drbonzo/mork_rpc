@@ -7,8 +7,9 @@ class Mork_Client_ResponseParser
 	 *
 	 * @return Mork_Client_Response
 	 *
-	 * @throws Mork_Client_ErrorResponseException
+	 * @throws Mork_Client_FailedRequestException
 	 * @throws Mork_Client_InvalidResponseException
+	 * @throws Mork_Client_ServerErrorResponseException
 	 */
 	public function parseResponse($jsonString, Mork_Client_Request $request)
 	{
@@ -36,11 +37,11 @@ class Mork_Client_ResponseParser
 			}
 			else if ( $response->isClientCausedError() )
 			{
-				throw new Mork_Client_ErrorResponseException($request);
+				throw new Mork_Client_FailedRequestException($request);
 			}
 			else
 			{
-				throw new Mork_Client_ErrorResponseException($request);
+				throw new Mork_Client_FailedRequestException($request);
 			}
 		}
 	}

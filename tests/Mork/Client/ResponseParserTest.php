@@ -174,7 +174,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 			
 			$this->assertFalse(true, 'Exception should have been thrown');
 		}
-		catch ( Mork_Client_ErrorResponseException $e )
+		catch ( Mork_Client_FailedRequestException $e )
 		{
 			$this->assertTrue(true, "we should have exception here");
 			
@@ -203,7 +203,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 				
 			$this->assertFalse(true, 'Exception should have been thrown');
 		}
-		catch ( Mork_Client_ErrorResponseException $e )
+		catch ( Mork_Client_FailedRequestException $e )
 		{
 			$this->assertTrue(true, "we should have exception here");
 				

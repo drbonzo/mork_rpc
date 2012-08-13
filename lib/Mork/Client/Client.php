@@ -33,8 +33,9 @@ class Mork_Client_Client
 	 * @return Mork_Client_Response
 	 * 
 	 * @throws Mork_Client_ConnectionException
-	 * @throws Mork_Client_ErrorResponseException
+	 * @throws Mork_Client_FailedRequestException
 	 * @throws Mork_Client_InvalidResponseException
+	 * @throws Mork_Client_ServerErrorResponseException
 	 */
 	public function sendRequest(Mork_Client_Request $request)
 	{

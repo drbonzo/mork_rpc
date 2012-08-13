@@ -5,7 +5,7 @@ $_files = array(
 	'Mork/Common/BaseResponse.php',
 	
 	'Mork/Client/ClientException.php',
-	'Mork/Client/ErrorResponseException.php',
+	'Mork/Client/FailedRequestException.php',
 	'Mork/Client/Client.php',
 	'Mork/Client/ConnectionException.php',
 	'Mork/Client/InvalidResponseException.php',
