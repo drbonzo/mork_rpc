@@ -22,9 +22,7 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		$this->errorCode = null;
 		$this->errorMessage = null;
 		
-		$this->headers = array(
-			'HTTP/1.1 200 OK' => 200	
-		);
+		$this->headers = array( 'HTTP/1.1 200 OK' => 200 );	
 	}
 	
 	/**
@@ -36,31 +34,7 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	private function initResponseHeaders()
 	{
 		$status = $this->status;
-		if ( $status == Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR )
-		{
-			$this->headers = array(
-				'HTTP/1.1 500 Internal Server Error' => 500
-			);
-		}
-		else if ( in_array( $status, array( 
-			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
-			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
-			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
-			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
-			Mork_Common_BaseResponse::APPLICATION_ERROR,
-		) ) )
-		{
-			$this->headers = array(
-				'HTTP/1.1 400 Bad Request' => 400
-			);
-		}
-		else 
-		{
-			$this->headers = array(
-				'HTTP/1.1 500 Internal Server Error' => 500
-			);
-		}
-				
+		$this->headers = array( 'HTTP/1.1 200 OK' => 200 );
 	}
 	
 	/**

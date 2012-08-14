@@ -186,7 +186,7 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	}	
 	
 	
-	// HEADERS
+	// HEADERS - always 200 OK
 	
 	public function testSuccessResponseHasHTTPStatus200Header()
 	{
@@ -194,29 +194,29 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 	}
 	
-	public function testErrorResponseWithInternalServerErrorHasHTTPStatus500Header()
+	public function testErrorResponseWithInternalServerErrorHasHTTPStatus200Header()
 	{
 		$response = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, 'fail' );
 		$headers = $response->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 500 Internal Server Error', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 	}
 	
-	public function testErrorResponseWithoutInternalServerErrorHasHTTPStatus400Header()
+	public function testErrorResponseWithoutInternalServerErrorHasHTTPStatus200Header()
 	{
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_JSON_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 400 Bad Request', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 400 Bad Request', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 400 Bad Request', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 400 Bad Request', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
 		$headers = Mork_Server_Response::newApplicationErrorResponse(Mork_Common_BaseResponse::APPLICATION_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 400 Bad Request', $headers));
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 	}
 	
 }

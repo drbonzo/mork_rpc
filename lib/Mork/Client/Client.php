@@ -39,31 +39,12 @@ class Mork_Client_Client
 	 */
 	public function sendRequest(Mork_Client_Request $request)
 	{
-		$ch = curl_init();
-		if ( $ch === false )
+		$context = $this->buildRequestContext($request);
+		$rawResponse = @file_get_contents($this->serverEndpointURL, null, $context);
+		if ( $rawResponse === FALSE )
 		{
 			throw new Mork_Client_ConnectionException($request);
 		}
-		
-		curl_setopt($ch, CURLOPT_URL, $this->serverEndpointURL);
-		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('application/json') );
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $request->getAsJSON());
-		curl_setopt($ch, CURLOPT_FAILONERROR, 0); // error 400, 500 will not result in fails
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		
-		$responseText = curl_exec($ch);
-		
-		if ( $responseText === false )
-		{
-			throw new Mork_Client_ConnectionException($request);
-		}
-		
-		list($responseHeaders, $rawResponse ) = preg_split('#(\r?\n){2}#', $responseText, 2 );
-
 		
 		$responseParser = new Mork_Client_ResponseParser();
 		$response = $responseParser->parseResponse($rawResponse, $request);
