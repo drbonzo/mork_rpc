@@ -44,7 +44,7 @@ class Mork_Client_ClientTest extends PHPUnit_Framework_TestCase
 		$expectedOptions = array(
 			'http' => array(
 				'method' => 'POST',
-				'header' => "Content-Type: application/json\r\n",
+				'header' => "Content-Type: application/json\r\nConnection: close\r\n",
 				'content' => $expectedJSON,
 				'timeout' => 10 
 			)
