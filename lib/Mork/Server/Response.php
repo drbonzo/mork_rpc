@@ -2,11 +2,14 @@
 // TODO we can introduce subclasses?
 class Mork_Server_Response extends Mork_Common_BaseResponse
 {
+	private $httpStatusCode;
+	
 	private $headers = array();
 	
 	protected function __construct()
 	{
 		parent::__construct();
+		$this->httpStatusCode = 200;
 		$this->headers = array();
 	}
 	
@@ -21,8 +24,6 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		$this->errorData = null;
 		$this->errorCode = null;
 		$this->errorMessage = null;
-		
-		$this->headers = array( 'HTTP/1.1 200 OK' => 200 );	
 	}
 	
 	/**
@@ -33,7 +34,9 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	 */
 	private function initResponseHeaders()
 	{
-		$this->headers = array( 'HTTP/1.1 200 OK' => 200 );
+		$this->headers = array();
+		$this->headers[] = 'HTTP/1.1 200 OK';
+		$this->headers[] = 'Content-Type: application/json; charset=utf-8';
 	}
 	
 	/**
@@ -45,6 +48,9 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	{
 		$response = new Mork_Server_Response();
 		$response->setSuccessData($responseData);
+		
+		$response->initResponseHeaders();
+		
 		return $response;
 	}
 	
@@ -123,9 +129,9 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	
 	public function sendHeaders()
 	{
-		foreach ( $this->getHeaders() as $headerName => $code )
+		foreach ( $this->getHeaders() as $header )
 		{
-			header($headerName, null, $code );
+			header($header);
 		}
 	}
 }

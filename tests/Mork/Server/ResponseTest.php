@@ -191,38 +191,44 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 	public function testSuccessResponseHasHTTPStatus200Header()
 	{
 		$headers = $this->successResponse->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 	}
 	
 	public function testErrorResponseWithInternalServerErrorHasHTTPStatus200Header()
 	{
 		$response = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR, 'fail' );
 		$headers = $response->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 	}
 	
 	public function testErrorResponseWithoutInternalServerErrorHasHTTPStatus200Header()
 	{
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_JSON_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::NOT_FOUND_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
 		
 		$headers = Mork_Server_Response::newApplicationErrorResponse(Mork_Common_BaseResponse::APPLICATION_ERROR, 'fail' )->getHeaders();
-		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		$this->checkHeaders($headers);
+	}
+	
+	private function checkHeaders($headers)
+	{
+		$this->assertContains('HTTP/1.1 200 OK', $headers);
+		$this->assertContains('Content-Type: application/json; charset=utf-8', $headers);
 	}
 	
 }
