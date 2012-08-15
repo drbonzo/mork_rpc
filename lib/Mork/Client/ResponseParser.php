@@ -13,9 +13,7 @@ class Mork_Client_ResponseParser
 	 */
 	public function parseResponse($jsonString, Mork_Client_Request $request)
 	{
-		$responseArray = json_decode($jsonString, true);
-		
-		$this->validateResponse($responseArray, $request);
+		$responseArray = $this->validateResponse($jsonString, $request);
 		
 		$morkData = $responseArray['mork'];
 		if ( $morkData['status'] == Mork_Common_BaseResponse::OK )
@@ -30,72 +28,75 @@ class Mork_Client_ResponseParser
 			$errorData = $morkData['error'];
 			$response = Mork_Client_Response::newErrorResponse($errorData['code'], $errorData['message'], $errorData['data'] );
 			$request->setResponse($response);
+			
 
 			if ( $response->isServerCausedError() )
 			{
-				throw new Mork_Client_ServerErrorResponseException($request);
+				throw new Mork_Client_ServerErrorResponseException($request, $jsonString);
 			}
 			else if ( $response->isClientCausedError() )
 			{
-				throw new Mork_Client_FailedRequestException($request);
+				throw new Mork_Client_FailedRequestException($request, $jsonString);
 			}
 			else
 			{
-				throw new Mork_Client_FailedRequestException($request);
+				throw new Mork_Client_FailedRequestException($request, $jsonString);
 			}
 		}
 	}
 
 	/**
-	 * @param array $responseArray
+	 * @param string $jsonString
 	 * @param Mork_Client_Request $request
 	 * 
 	 * @throws Mork_Client_InvalidResponseException
 	 */
-	private function validateResponse($responseArray, Mork_Client_Request $request)
+	private function validateResponse($jsonString, Mork_Client_Request $request)
 	{
+		$responseArray = json_decode($jsonString, true);
+		 
 		if ( is_null($responseArray))
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Invalid JSON in response');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Invalid JSON in response');
 		}
 
 		if ( ! isset($responseArray['mork']) )
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Missing "mork" property');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork" property');
 		}
 
 		if ( ! is_array($responseArray['mork'] ) )
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Invalid value for "mork"');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Invalid value for "mork"');
 		}
 
 		$morkData = $responseArray['mork'];
 
 		if ( ! isset($morkData['version']) )
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.version" property');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.version" property');
 		}
 
 		if ( $morkData['version'] != Mork_Common_Commons::VERSION_1_0)
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Invalid "mork.version" value');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Invalid "mork.version" value');
 		}
 
 		if ( ! isset($morkData['status']))
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.status" property');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.status" property');
 		}
 
 		if ( ! in_array($morkData['status'], Mork_Common_BaseResponse::getAllStatuses() ) )
 		{
-			throw new Mork_Client_InvalidResponseException($request, 'Invalid "mork.status" value');
+			throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Invalid "mork.status" value');
 		}
 
 		if ( $morkData['status'] == Mork_Common_BaseResponse::OK )
 		{
 			if ( ! array_key_exists('data', $morkData))
 			{
-				throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.data" for successfull response');
+				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.data" for successfull response');
 			}
 		}
 		
@@ -107,23 +108,25 @@ class Mork_Client_ResponseParser
 				
 				if ( ! array_key_exists('data', $errorData))
 				{
-					throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.error.data" for error response');
+					throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error.data" for error response');
 				}
 				
 				if ( ! isset($errorData['code']))
 				{
-					throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.error.data" for error response');
+					throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error.data" for error response');
 				}
 				
 				if ( ! isset($errorData['message']))
 				{
-					throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.error.data" for error response');
+					throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error.data" for error response');
 				}
 			}
 			else
 			{
-				throw new Mork_Client_InvalidResponseException($request, 'Missing "mork.error" for successfull response');
+				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error" for successfull response');
 			}
 		}
+		
+		return $responseArray;
 	}
 }

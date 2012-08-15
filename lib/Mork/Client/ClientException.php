@@ -6,10 +6,22 @@ class Mork_Client_ClientException extends Mork_Common_Exception
 	 */
 	private $request = null;
 	
-	public function __construct(Mork_Client_Request $request, $message = null)
+	/**
+	 * @var string
+	 */
+	private $rawJSON = null;
+	
+	/**
+	 * 
+	 * @param Mork_Client_Request $request
+	 * @param string $rawJSON
+	 * @param string $message
+	 */
+	public function __construct(Mork_Client_Request $request, $rawJSON, $message = null)
 	{
 		parent::__construct($message);
 		$this->request = $request;
+		$this->rawJSON = $rawJSON;
 	}
 	
 	/**
@@ -18,5 +30,10 @@ class Mork_Client_ClientException extends Mork_Common_Exception
 	public function getRequest()
 	{
 		return $this->request;
+	}
+	
+	public function getResponseRawJSON()
+	{
+		return $this->rawJSON;
 	}
 }

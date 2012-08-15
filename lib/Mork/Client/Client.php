@@ -43,12 +43,12 @@ class Mork_Client_Client
 		$rawResponse = @file_get_contents($this->serverEndpointURL, null, $context);
 		if ( $rawResponse === FALSE )
 		{
-			throw new Mork_Client_ConnectionException($request);
+			throw new Mork_Client_ConnectionException($request, null);
 		}
 		
 		$responseParser = new Mork_Client_ResponseParser();
 		$response = $responseParser->parseResponse($rawResponse, $request);
-		return $rawResponse;
+		return $response;
 	}
 	
 	/**
