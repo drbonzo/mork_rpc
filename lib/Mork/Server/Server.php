@@ -60,7 +60,7 @@ class Mork_Server_Server
 		}
 		catch ( Mork_Server_AuthenticationException $e )
 		{
-			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, $e->getMessage(), null );
+			return Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR, $e->getMessage(), null );
 		}
 		catch ( Mork_Server_ApplicationException $e )
 		{

@@ -212,7 +212,13 @@ class Mork_Server_ServerResponseTest extends PHPUnit_Framework_TestCase
 		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR, 'fail' )->getHeaders();
 		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
-		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, 'fail' )->getHeaders();
+		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::NOT_FOUND_ERROR, 'fail' )->getHeaders();
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		
+		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR, 'fail' )->getHeaders();
+		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
+		
+		$headers = Mork_Server_Response::newErrorResponse(Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR, 'fail' )->getHeaders();
 		$this->assertTrue(array_key_exists('HTTP/1.1 200 OK', $headers));
 		
 		$headers = Mork_Server_Response::newApplicationErrorResponse(Mork_Common_BaseResponse::APPLICATION_ERROR, 'fail' )->getHeaders();

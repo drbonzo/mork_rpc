@@ -82,10 +82,24 @@ class Mork_Client_ResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($response->isServerCausedError());
 		$this->assertTrue($response->isClientCausedError());
 	}
-	
-	public function testAUTHENTICATION_ERRORErrorCausesClientCausedError()
+
+	public function testNOT_FOUND_ERRORErrorCausesClientCausedError()
 	{
-		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::AUTHENTICATION_ERROR, 'Foo', null);
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::NOT_FOUND_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+
+	public function testAUTHENTICATION_REQUIRED_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::AUTHENTICATION_REQUIRED_ERROR, 'Foo', null);
+		$this->assertFalse($response->isServerCausedError());
+		$this->assertTrue($response->isClientCausedError());
+	}
+
+	public function testPERMISSION_DENIED_ERRORErrorCausesClientCausedError()
+	{
+		$response = Mork_Client_Response::newErrorResponse(Mork_Client_Response::PERMISSION_DENIED_ERROR, 'Foo', null);
 		$this->assertFalse($response->isServerCausedError());
 		$this->assertTrue($response->isClientCausedError());
 	}

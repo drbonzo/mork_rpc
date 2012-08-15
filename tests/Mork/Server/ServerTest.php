@@ -72,18 +72,43 @@ class Mork_Server_ServerTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(Mork_Common_BaseResponse::INVALID_REQUEST_ERROR, $response->getErrorCode());
 	}
 
+	public function testServerRespondsWithNotFoundErrorWhenResourceWasNotFound()
+	{
+		$request = new Mork_Client_Request('failWithNotFound');
+		$request->setParam('title', 'foo_bar');
+		$json = $request->getAsJSON();
+		
+		$response = $this->serverWithMockedHandler->handle($json);
+		
+		$this->assertInstanceOf('Mork_Server_Response', $response);
+		$this->assertTrue($response->isError());
+		$this->assertEquals(Mork_Common_BaseResponse::NOT_FOUND_ERROR, $response->getErrorCode());
+	}
+
+	public function testServerRespondsWithNoAuthentication()
+	{
+		$request = new Mork_Client_Request('failWithNoAuthentication');
+		$request->setParam('title', 'foo_bar');
+		$json = $request->getAsJSON();
+
+		$response = $this->serverWithMockedHandler->handle($json);
+		$this->assertInstanceOf('Mork_Server_Response', $response);
+		$this->assertTrue($response->isError());
+		$this->assertEquals(Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR, $response->getErrorCode());
+	}
+
 	public function testServerRespondsWithAuthenticationErrorWhenAuthFailed()
 	{
 		$request = new Mork_Client_Request('failWithAuthentication');
 		$request->setParam('title', 'foo_bar');
 		$json = $request->getAsJSON();
-		
+
 		$response = $this->serverWithMockedHandler->handle($json);
 		$this->assertInstanceOf('Mork_Server_Response', $response);
 		$this->assertTrue($response->isError());
-		$this->assertEquals(Mork_Common_BaseResponse::AUTHENTICATION_ERROR, $response->getErrorCode());
+		$this->assertEquals(Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR, $response->getErrorCode());
 	}
-	
+
 	public function testServerRespondsWithApplicationErrorWhenApplicationExceptionIsThrown()
 	{
 		$request = new Mork_Client_Request('forceApplicationFail');
@@ -136,18 +161,28 @@ class Mork_Server_ServerTest_SampleHandler
 		throw new Mork_Server_AuthenticationException('Invalid api key');
 	}
 	
-	public function forceApplicationFail()
+	public function forceApplicationFail(Mork_Server_Request $request)
 	{
 		throw new Mork_Server_ApplicationException('SERVICE_DISABLED', 'Service is disabled', array( 'lol' => 'rotfl' ));
 	}
 	
-	public function forceServerFail()
+	public function forceServerFail(Mork_Server_Request $request)
 	{
 		throw new Mork_Server_ServerException('Some message');
 	}
 	
-	public function forceUnexpectedFail()
+	public function forceUnexpectedFail(Mork_Server_Request $request)
 	{
 		throw new InvalidArgumentException();
+	}
+	
+	public function failWithNoAuthentication(Mork_Server_Request $request)
+	{
+		$request->returnErrorResponse(Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR, "please give login + password");
+	}
+	
+	public function failWithNotFound(Mork_Server_Request $request)
+	{
+		$request->returnErrorResponse(Mork_Common_BaseResponse::NOT_FOUND_ERROR, "Page not found");
 	}
 }

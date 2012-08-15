@@ -33,7 +33,6 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 	 */
 	private function initResponseHeaders()
 	{
-		$status = $this->status;
 		$this->headers = array( 'HTTP/1.1 200 OK' => 200 );
 	}
 	

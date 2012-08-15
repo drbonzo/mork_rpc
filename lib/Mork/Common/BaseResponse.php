@@ -6,7 +6,9 @@ abstract class Mork_Common_BaseResponse
 	const INVALID_REQUEST_ERROR = 'INVALID_REQUEST_ERROR';
 	const METHOD_NOT_FOUND_ERROR = 'METHOD_NOT_FOUND_ERROR';
 	const INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
-	const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+	const NOT_FOUND_ERROR = 'NOT_FOUND_ERROR'; // 404
+	const AUTHENTICATION_REQUIRED_ERROR = 'AUTHENTICATION_REQUIRED_ERROR'; // 401
+	const PERMISSION_DENIED_ERROR = 'PERMISSION_DENIED_ERROR'; // 403
 	const APPLICATION_ERROR = 'APPLICATION_ERROR';
 	
 	protected $status;
@@ -80,7 +82,9 @@ abstract class Mork_Common_BaseResponse
 			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
 			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
 			Mork_Common_BaseResponse::INTERNAL_SERVER_ERROR,
-			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR,
+			Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR,
 			Mork_Common_BaseResponse::APPLICATION_ERROR,
 		);
 	}
@@ -99,7 +103,9 @@ abstract class Mork_Common_BaseResponse
 			Mork_Common_BaseResponse::INVALID_JSON_ERROR,
 			Mork_Common_BaseResponse::INVALID_REQUEST_ERROR,
 			Mork_Common_BaseResponse::METHOD_NOT_FOUND_ERROR,
-			Mork_Common_BaseResponse::AUTHENTICATION_ERROR,
+			Mork_Common_BaseResponse::NOT_FOUND_ERROR,
+			Mork_Common_BaseResponse::AUTHENTICATION_REQUIRED_ERROR,
+			Mork_Common_BaseResponse::PERMISSION_DENIED_ERROR,
 			Mork_Common_BaseResponse::APPLICATION_ERROR,
 		);
 	}

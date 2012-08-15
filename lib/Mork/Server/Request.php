@@ -57,7 +57,7 @@ class Mork_Server_Request
 	 * @param string $errorMessage
 	 * @param mixed $errorData
 	 */
-	public function returnErrorResponse($errorCode, $errorMessage, $errorData)
+	public function returnErrorResponse($errorCode, $errorMessage, $errorData = null)
 	{
 		$this->response = Mork_Server_Response::newErrorResponse($errorCode, $errorMessage, $errorData);
 	}
