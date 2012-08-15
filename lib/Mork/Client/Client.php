@@ -60,10 +60,13 @@ class Mork_Client_Client
 	{
 		$requestJSON = $request->getAsJSON();
 		
+		// Connection: close
+		// Fixes bug when accessing localhost server from localhost client.
+		// Each request used to take 5s instead of just a moment 
 		$context = stream_context_create(array(
 			'http' => array(
 				'method'  => Mork_Client_Client::DEFAULT_HTTP_METHOD_TYPE,
-				'header'  => sprintf("Content-Type: %s\r\n", Mork_Client_Client::CONTENT_TYPE ),
+				'header'  => sprintf("Content-Type: %s\r\nConnection: close\r\n", Mork_Client_Client::CONTENT_TYPE ),
 				'content' => $requestJSON,
 				'timeout' => $this->requestTimeout
 			)
