@@ -20,6 +20,8 @@ class Mork_Server_Request
 	{
 		$this->methodName = $methodName;
 		$this->params = $params;
+		
+		$this->response = Mork_Server_Response::newErrorResponse(Mork_Server_Response::INTERNAL_SERVER_ERROR, 'No response was set.');
 	}
 
 	public function getMethodName()

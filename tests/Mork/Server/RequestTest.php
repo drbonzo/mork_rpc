@@ -31,9 +31,10 @@ class Mork_Server_RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($this->request->getParam('unknown'));
 	}
 	
-	public function testNewRequestHasNoResponseYet()
+	public function testNewRequestHasResponseIndicatingError()
 	{
-		$this->assertNull($this->request->getResponse());
+		$response = $this->request->getResponse();
+		$this->assertEquals(Mork_Server_Response::INTERNAL_SERVER_ERROR, $response->getStatus());
 	}
 	
 	public function testRequestWithSuccessResponseSetHasResponse()
