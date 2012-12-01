@@ -48,6 +48,8 @@ class Mork_Client_ResponseParser
 	/**
 	 * @param string $jsonString
 	 * @param Mork_Client_Request $request
+	 *
+	 * @return array
 	 * 
 	 * @throws Mork_Client_InvalidResponseException
 	 */
@@ -96,7 +98,7 @@ class Mork_Client_ResponseParser
 		{
 			if ( ! array_key_exists('data', $morkData))
 			{
-				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.data" for successfull response');
+				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.data" for successful response');
 			}
 		}
 		
@@ -123,7 +125,7 @@ class Mork_Client_ResponseParser
 			}
 			else
 			{
-				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error" for successfull response');
+				throw new Mork_Client_InvalidResponseException($request, $jsonString, 'Missing "mork.error" for successful response');
 			}
 		}
 		

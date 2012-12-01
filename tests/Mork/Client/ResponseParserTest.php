@@ -67,7 +67,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 		$this->responseParser->parseResponse( $json, $this->request );
 	}
 	
-	public function testVersionProperyNotBeingValidResultsInException()
+	public function testVersionPropertyNotBeingValidResultsInException()
 	{
 		$this->successResponseArray['mork']['version'] = "-123asda";
 		$json = json_encode($this->successResponseArray);
@@ -77,7 +77,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 	}
 	
 	// status
-	public function testMissingStatusProperyResultsInException()
+	public function testMissingStatusPropertyResultsInException()
 	{
 		unset($this->successResponseArray['mork']['status']);
 		$json = json_encode($this->successResponseArray);
@@ -146,7 +146,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 	
 	// success
 	
-	public function testCorrectSuccessfullResponseResultsInResponseObject()
+	public function testCorrectSuccessfulResponseResultsInResponseObject()
 	{
 		$json = json_encode($this->successResponseArray);
 		$response = $this->responseParser->parseResponse( $json, $this->request );
@@ -156,7 +156,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array('foo' => 'bar', 'id' => 4), $response->getData());
 	}
 	
-	public function testCorrectSuccessfullResponseAllowsNullData()
+	public function testCorrectSuccessfulResponseAllowsNullData()
 	{
 		$this->successResponseArray['mork']['data'] = null;
 		$json = json_encode($this->successResponseArray);
@@ -207,7 +207,7 @@ class Mork_Client_ResponseParserTest extends PHPUnit_Framework_TestCase
 		{
 			$this->assertTrue(true, "we should have exception here");
 				
-			$response = $request->getResponse();
+			$response = $this->request->getResponse();
 			$this->assertInstanceOf('Mork_Client_Response', $response);
 				
 			$this->assertNull( $response->getErrorMessage());

@@ -20,13 +20,13 @@ class Mork_Server_Server
 	{
 		$this->actionHandler = $actionHandler;
 	}
-	
+
 	/**
 	 * @param string $input
-	 * 
+	 *
+	 * @throws Mork_Server_MethodNotFoundException
 	 * @return Mork_Server_Response
-	 * 
-	 * @throws Mork_Server_ServerException
+	 *
 	 */
 	public function handle($input)
 	{
@@ -41,7 +41,7 @@ class Mork_Server_Server
 			}
 			else
 			{
-				$result = call_user_func_array(array($this->actionHandler, $methodName), array($request) );
+				call_user_func_array(array($this->actionHandler, $methodName), array($request) );
 				$response = $request->getResponse();
 				return $response;
 			}

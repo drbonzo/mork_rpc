@@ -26,12 +26,6 @@ class Mork_Server_Response extends Mork_Common_BaseResponse
 		$this->errorMessage = null;
 	}
 	
-	/**
-	 * @param string $errorStatus - see constants in this class; if different from APPLICATION_ERROR then code := status
-	 * @param string $errorCode 
-	 * @param string $errorMessage
-	 * @param mixed $data
-	 */
 	private function initResponseHeaders()
 	{
 		$this->headers = array();
